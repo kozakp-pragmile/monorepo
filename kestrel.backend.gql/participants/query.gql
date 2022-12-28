@@ -1,0 +1,19 @@
+query Participants {
+    all: participantsPage(offsetAndLimit: {limit: 10, offset: 0}) {
+        ...PP
+    }
+    pk: participantsPage(filter: {firstNames: ["Piotr"]}, offsetAndLimit: {limit: 10, offset: 0}) {
+        ...PP
+    }
+}
+fragment PP on ParticipantsPage {
+    participants {
+        id
+        firstName
+        lastName
+        email
+    }
+    pagination {
+        totalCount
+    }
+}

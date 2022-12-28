@@ -1,0 +1,597 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+directive @AssertFalse(message: String = "graphql.validation.AssertFalse.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @AssertTrue(message: String = "graphql.validation.AssertTrue.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @DecimalMax(inclusive: Boolean! = true, message: String = "graphql.validation.DecimalMax.message", value: String!) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @DecimalMin(inclusive: Boolean! = true, message: String = "graphql.validation.DecimalMin.message", value: String!) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @Digits(fraction: Int!, integer: Int!, message: String = "graphql.validation.Digits.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @Expression(message: String = "graphql.validation.Expression.message", value: String!) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @Max(message: String = "graphql.validation.Max.message", value: Int! = 2147483647) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @Min(message: String = "graphql.validation.Min.message", value: Int! = 0) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @Negative(message: String = "graphql.validation.Negative.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @NegativeOrZero(message: String = "graphql.validation.NegativeOrZero.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @NotBlank(message: String = "graphql.validation.NotBlank.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @NotEmpty(message: String = "graphql.validation.NotEmpty.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @ContainerNotEmpty(message: String = "graphql.validation.ContainerNotEmpty.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @Pattern(message: String = "graphql.validation.Pattern.message", regexp: String! = ".*") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @Positive(message: String = "graphql.validation.Positive.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @PositiveOrZero(message: String = "graphql.validation.PositiveOrZero.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @Range(max: Int = 2147483647, message: String = "graphql.validation.Range.message", min: Int = 0) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @Size(max: Int = 2147483647, message: String = "graphql.validation.Size.message", min: Int = 0) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @ContainerSize(max: Int = 2147483647, message: String = "graphql.validation.ContainerSize.message", min: Int = 0) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @FutureOrPresent(message: String = "{path} should not be from the past") on INPUT_FIELD_DEFINITION
+
+directive @NotAfter(message: String = "{path} should not be after than the referenced element", ref: String) on INPUT_FIELD_DEFINITION
+
+directive @NotBefore(message: String = "{path} should not be before than the referenced element", ref: String) on INPUT_FIELD_DEFINITION
+
+interface Node {
+    id: ID!
+}
+
+interface SurveyChangeDescription {
+    title: String!
+}
+
+type CompleteEnrollmentPayload {
+    enrollment: Enrollment
+    userErrors: [UserError!]!
+}
+
+type CreateSlicePayload {
+    slice: Slice
+    userErrors: [UserError!]!
+}
+
+type CreateSurveyPayload {
+    survey: Survey
+    userErrors: [UserError!]!
+}
+
+type Enrollment implements Node {
+    answers: AnswersSchema
+    completed: DateTime
+    completionState: EnrollmentCompletionState!
+    created: DateTime!
+    definition: DefinitionSchema!
+    description: String
+    ended: DateTime!
+    id: ID!
+    started: DateTime!
+    surveyType: SurveyType!
+    title: String!
+    version: Int!
+}
+
+type EnrollmentSnapshot implements Node {
+    completed: DateTime
+    completionState: EnrollmentCompletionState!
+    due: DateTime!
+    id: ID!
+    participant: Participant!
+    respondedName: String!
+    started: DateTime!
+    surveyType: SurveyType!
+    title: String!
+}
+
+type EnrollmentsPage {
+    enrollments: [EnrollmentSnapshot!]!
+    pagination: Pagination!
+}
+
+type Mutation {
+    completeEnrollment(input: CompleteEnrollmentInput!): CompleteEnrollmentPayload!
+    createExternalParticipants(participants: [CreateParticipantInput!]!): [Participant!]!
+    createRemoteResource(remoteResource: CreateRemoteResourceInput!): RemoteResource!
+    createSlice(input: CreateSliceInput!): CreateSlicePayload!
+    createSurvey(input: CreateSurveyInput!): CreateSurveyPayload!
+    publishSlice(input: PublishSliceInput!): PublishSlicePayload!
+    publishSurvey(input: PublishSurveyInput!): PublishSurveyPayload!
+    removeParticipants(ids: [ID!]!): RemoveParticipantsPayload
+    submitEnrollmentAnswers(input: SubmitEnrollmentAnswersInput!): SubmitEnrollmentAnswersPayload!
+    unpublishSlice(input: UnpublishSliceInput!): UnpublishSlicePayload!
+    updateExternalParticipants(participants: [UpdateParticipantInput!]!): [Participant!]!
+    updateRemoteResource(input: UpdateRemoteResourceInput!): UpdateRemoteResourcePayload!
+    updateSliceDefinition(input: UpdateSliceDefinitionInput!): UpdateSliceDefinitionPayload!
+    updateSliceMetadata(input: UpdateSliceMetadataInput!): UpdateSliceMetadataPayload!
+    updateSurveyDefinition(input: UpdateSurveyDefinitionInput!): UpdateSurveyDefinitionPayload!
+    updateSurveyDistribution(input: UpdateSurveyDistributionInput!): UpdateSurveyDistributionPayload!
+    updateSurveyMetadata(input: UpdateSurveyMetadataInput!): UpdateSurveyMetadataPayload!
+}
+
+type PageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+}
+
+type Pagination {
+    totalCount: Int!
+}
+
+type Participant {
+    created: DateTime!
+    createdBy: User!
+    email: String!
+    firstName: String!
+    id: ID!
+    lastName: String!
+    participantType: ParticipantType!
+}
+
+type ParticipantConnection {
+    edges: [ParticipantEdge]
+    pageInfo: PageInfo
+}
+
+type ParticipantEdge {
+    cursor: String
+    node: Participant
+}
+
+type ParticipantsPage {
+    pagination: Pagination!
+    participants: [Participant!]!
+}
+
+type PublishSlicePayload {
+    slice: Slice
+    userErrors: [UserError!]!
+}
+
+type PublishSurveyPayload {
+    survey: Survey
+    userErrors: [UserError!]!
+}
+
+type Query {
+    enrollmentById(id: ID!): Enrollment
+    enrollmentsPage(filter: EnrollmentFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): EnrollmentsPage!
+    fetchRemoteResourceData(id: ID!): RemoteResourceData!
+    me: User!
+    participants(after: String, filter: ParticipantFilter, first: Int!): ParticipantConnection!
+    participantsPage(filter: ParticipantFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage
+    participantsPageGeneric(filter: FilterSchema, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage
+    remoteResourceById(id: ID!): RemoteResource!
+    remoteResources(after: String, filter: RemoteResourceFilter, first: Int!): RemoteResourceConnection!
+    remoteResourcesPage(filter: RemoteResourceFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): RemoteResourcesPage
+    sliceById(id: ID!): Slice
+    slicesPage(filter: SliceFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SlicesPage!
+    surveyById(id: ID!): Survey
+    surveyHistoryPage(filter: SurveyHistoryFilter, id: ID!, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SurveyHistoryPage!
+    surveysPage(filter: SurveyFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SurveysPage!
+    users(after: String, filter: UserFilter, first: Int!): UserConnection!
+}
+
+type RemoteResource {
+    createdBy: User!
+    id: ID!
+    name: String!
+    url: String!
+}
+
+type RemoteResourceConnection {
+    edges: [RemoteResourceEdge]
+    pageInfo: PageInfo
+}
+
+type RemoteResourceData {
+    id: ID!
+    json: String
+    name: String!
+    url: String!
+}
+
+type RemoteResourceEdge {
+    cursor: String
+    node: RemoteResource
+}
+
+type RemoteResourcesPage {
+    pagination: Pagination!
+    remoteResources: [RemoteResource!]!
+}
+
+type RemoveParticipantsPayload {
+    nRemoved: Int
+    participants: [Participant!]!
+}
+
+type Slice implements Node {
+    created: DateTime!
+    createdBy: User!
+    definition: DefinitionSchema
+    description: String
+    id: ID!
+    isPublished: Boolean!
+    title: String!
+    version: Int!
+}
+
+type SliceSnapshot implements Node {
+    created: DateTime!
+    createdBy: User!
+    definition: DefinitionSchema
+    description: String
+    id: ID!
+    isPublished: Boolean
+    title: String!
+    version: Int
+}
+
+type SlicesPage {
+    pagination: Pagination!
+    slices: [SliceSnapshot!]!
+}
+
+type SubmitEnrollmentAnswersPayload {
+    enrollment: Enrollment
+    userErrors: [UserError!]!
+}
+
+type Survey implements Node {
+    created: DateTime!
+    createdBy: User!
+    definition: DefinitionSchema
+    description: String
+    endDate: DateTime
+    id: ID!
+    participants: [Participant]
+    startDate: DateTime
+    state: SurveyState!
+    title: String!
+    version: Int!
+}
+
+type SurveyChange implements Node {
+    changed: DateTime!
+    changedBy: User!
+    description: SurveyChangeDescription!
+    id: ID!
+    type: SurveyChangeType!
+}
+
+type SurveyChangeDescriptionDefinitions implements SurveyChangeDescription {
+    newDefinition: DefinitionSchema
+    oldDefinition: DefinitionSchema
+    title: String!
+}
+
+type SurveyChangeDescriptionJson implements SurveyChangeDescription {
+    newJson: JSON
+    oldJson: JSON
+    title: String!
+}
+
+type SurveyHistoryPage {
+    changes: [SurveyChange!]!
+    pagination: Pagination!
+}
+
+type SurveySnapshot implements Node {
+    created: DateTime!
+    createdBy: User!
+    description: String
+    id: ID!
+    state: SurveyState!
+    title: String!
+}
+
+type SurveysPage {
+    pagination: Pagination!
+    surveys: [SurveySnapshot!]!
+}
+
+type UnpublishSlicePayload {
+    slice: Slice
+    userErrors: [UserError!]!
+}
+
+type UpdateRemoteResourcePayload {
+    remoteResource: RemoteResource
+    userErrors: [UserError!]!
+}
+
+type UpdateSliceDefinitionPayload {
+    slice: Slice
+    userErrors: [UserError!]!
+}
+
+type UpdateSliceMetadataPayload {
+    slice: Slice!
+}
+
+type UpdateSurveyDefinitionPayload {
+    survey: Survey
+    userErrors: [UserError!]!
+}
+
+type UpdateSurveyDistributionPayload {
+    survey: Survey
+    userErrors: [UserError!]!
+}
+
+type UpdateSurveyMetadataPayload {
+    survey: Survey
+    userErrors: [UserError!]!
+}
+
+type User implements Node {
+    displayName: String!
+    email: String!
+    id: ID!
+    phoneNumber: String!
+}
+
+type UserConnection {
+    edges: [UserEdge]
+    pageInfo: PageInfo
+}
+
+type UserEdge {
+    cursor: String
+    node: User
+}
+
+type UserError {
+    code: UserErrorCode!
+    message: String!
+    path: [String!]
+}
+
+enum EnrollmentCompletionState {
+    COMPLETED
+    DRAFT
+    NEW
+}
+
+enum OrderByDirection {
+    ASC
+    DESC
+}
+
+enum ParticipantType {
+    EXTERNAL
+    INTERNAL
+}
+
+enum SurveyChangeType {
+    CANCEL
+    DEFINITION
+    DELETE
+    DISTRIBUTION
+    METADATA
+    PUBLISH
+    SLICE
+}
+
+enum SurveyState {
+    CANCELED
+    DELETED
+    PUBLISHED
+    UNPUBLISHED
+}
+
+enum SurveyType {
+    RECURRING_SURVEY
+    SURVEY
+}
+
+enum UserErrorCode {
+    DEFINITION_INVALID_JSON
+    DEFINITION_SLICE_CONTAINS_PAGES
+    DEFINITION_SLICE_INVALID_JSON
+    DEFINITION_SLICE_TOO_MANY_PAGES
+    FORM_METADATA_ALREADY_CONNECTED_TO_DEFINITION
+    FORM_METADATA_NOT_EXISTS
+    SLICE_ALREADY_PUBLISHED
+    SLICE_NOT_PUBLISHED
+    SURVEY_END_DATE_BEFORE
+    SURVEY_INVALID_STATE_ON_PUBLISH
+    SURVEY_INVALID_STATE_ON_UPDATE
+    SURVEY_NOT_UNPUBLISHED
+    SURVEY_NO_DEFINITION_ON_PUBLISH
+    SURVEY_NO_DISTRIBUTION_ON_PUBLISH
+    SURVEY_NO_PARTICIPANTS
+    SURVEY_START_DATE_ELAPSED
+    SURVEY_START_PARTICIPANT_REMOVED_ON_PUBLISHED
+}
+
+scalar AnswersSchema
+
+"An RFC-3339 compliant DateTime Scalar"
+scalar DateTime
+
+scalar DefinitionSchema
+
+scalar FilterSchema
+
+"A JSON scalar"
+scalar JSON
+
+input CompleteEnrollmentInput {
+    answers: JSON!
+    id: ID!
+    version: Int!
+}
+
+input CreateParticipantInput {
+    email: String!
+    firstName: String!
+    lastName: String!
+}
+
+input CreateRemoteResourceInput {
+    name: String!
+    password: String!
+    url: String!
+    username: String!
+}
+
+input CreateSliceInput {
+    description: String
+    title: String!
+}
+
+input CreateSurveyInput {
+    description: String
+    title: String!
+}
+
+input DateRange {
+    from: DateTime
+    to: DateTime
+}
+
+input EnrollmentFilter {
+    completedBetween: DateRange
+    completionStates: [EnrollmentCompletionState]
+    dueBetween: DateRange
+    startedBetween: DateRange
+    surveyIds: [String]
+    titles: [String]
+    types: [SurveyType]
+}
+
+input OffsetAndLimit {
+    limit: Int!
+    offset: Int!
+}
+
+input OrderBy {
+    direction: OrderByDirection!
+    field: String!
+}
+
+input ParticipantFilter {
+    emails: [String]
+    firstNames: [String]
+    lastNames: [String]
+    names: [String]
+    participantType: ParticipantType
+}
+
+input PublishSliceInput {
+    id: ID!
+    version: Int!
+}
+
+input PublishSurveyInput {
+    id: ID!
+    version: Int!
+}
+
+input RemoteResourceFilter {
+    names: [String]
+}
+
+input SliceFilter {
+    createdBetween: DateRange
+    createdByIds: [String]
+    descriptions: [String]
+    published: Boolean
+    titles: [String]
+}
+
+input SubmitEnrollmentAnswersInput {
+    answers: JSON!
+    id: ID!
+    version: Int!
+}
+
+input SurveyFilter {
+    createdBetween: DateRange
+    createdByIds: [String]
+    descriptions: [String]
+    titles: [String]
+}
+
+input SurveyHistoryFilter {
+    changeTypes: [SurveyChangeType]
+    changedBetween: DateRange
+    changedByIds: [String]
+}
+
+input UnpublishSliceInput {
+    id: ID!
+    version: Int!
+}
+
+input UpdateParticipantInput {
+    email: String!
+    firstName: String!
+    id: ID!
+    lastName: String!
+}
+
+input UpdateRemoteResourceInput {
+    id: String!
+    name: String!
+    password: String!
+    url: String!
+    username: String!
+}
+
+input UpdateSliceDefinitionInput {
+    definition: JSON!
+    id: ID!
+    version: Int!
+}
+
+input UpdateSliceMetadataInput {
+    description: String
+    id: ID!
+    title: String!
+    version: Int!
+}
+
+input UpdateSurveyDefinitionInput {
+    definition: JSON!
+    id: ID!
+    version: Int!
+}
+
+input UpdateSurveyDistributionInput {
+    endDate: DateTime
+    id: ID!
+    participantIds: [String!]!
+    startDate: DateTime
+    version: Int!
+}
+
+input UpdateSurveyMetadataInput {
+    description: String
+    id: ID!
+    title: String!
+    version: Int!
+}
+
+input UserFilter {
+    displayNames: [String!]!
+}

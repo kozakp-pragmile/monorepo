@@ -1,0 +1,36 @@
+query Participants {
+    all: participantsPageGeneric(offsetAndLimit: {limit: 10, offset: 0}) {
+        ...PP
+    }
+    pk: participantsPageGeneric(
+        filter: "{\"field\": \"firstName\", \"operator\": \"EQ\", \"value\": \"Piotr\"}",
+        offsetAndLimit: {limit: 10, offset: 0}) {
+        ...PP
+    },
+    contains: participantsPageGeneric(
+        filter: "{\"field\": \"lastName\", \"operator\": \"CONTAINS\", \"value\": \"G\"}",
+        offsetAndLimit: {limit: 10, offset: 0}) {
+        ...PP
+    }
+    doesNotContain: participantsPageGeneric(
+        filter: "{\"field\": \"lastName\", \"operator\": \"DOES_NOT_CONTAIN\", \"value\": \"G\"}",
+        offsetAndLimit: {limit: 10, offset: 0}) {
+        ...PP
+    }
+    byDate: participantsPageGeneric(
+        filter: "{\"field\": \"created\", \"operator\": \"GT\", \"value\": 1672228518000}",
+        offsetAndLimit: {limit: 10, offset: 0}) {
+        ...PP
+    }
+}
+fragment PP on ParticipantsPage {
+    participants {
+        id
+        firstName
+        lastName
+        email
+    }
+    pagination {
+        totalCount
+    }
+}

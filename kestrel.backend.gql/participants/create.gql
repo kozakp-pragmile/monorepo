@@ -1,0 +1,28 @@
+mutation CreateParticipant {
+    createExternalParticipants(participants: [
+        {
+            firstName: "Piotr",
+            lastName: "Kozak",
+            email: "piotr.kozak@pragmile.com"
+        },
+        {
+            firstName: "Patrycja",
+            lastName: "Le Thanh",
+            email: "palawith@gmail.com"
+        },
+        {
+            firstName: "Bill",
+            lastName: "Gates",
+            email: "bgates@microsoft.com"
+        },
+        {
+            firstName: "Jeff",
+            lastName: "Bezzos",
+            email: "jb@aws.com"
+        }
+    ]) {
+        id
+        email
+        participantType
+    }
+}
