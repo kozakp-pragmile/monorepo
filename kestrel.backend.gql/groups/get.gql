@@ -1,0 +1,22 @@
+query ParticipantGroup {
+    participantGroupById(id: "a60009d1-f992-47c7-a811-e9d0f1e7b7ea") {
+        id
+        memberIds
+        membersPage(
+            filter: {lastNames: ["e"]},
+            orderBy: {direction: ASC, field: "firstName"},
+            offsetAndLimit: {offset: 0, limit: 2}) {
+            participants {
+                id
+                lastName
+                firstName
+                email
+            }
+            pagination {
+                totalCount
+            }
+        }
+        title
+        description
+    }
+}

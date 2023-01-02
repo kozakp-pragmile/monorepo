@@ -62,6 +62,11 @@ type CompleteEnrollmentPayload {
     userErrors: [UserError!]!
 }
 
+type CreateParticipantGroupPayload {
+    participantGroup: ParticipantGroup
+    userErrors: [UserError!]!
+}
+
 type CreateSlicePayload {
     slice: Slice
     userErrors: [UserError!]!
@@ -107,6 +112,7 @@ type EnrollmentsPage {
 type Mutation {
     completeEnrollment(input: CompleteEnrollmentInput!): CompleteEnrollmentPayload!
     createExternalParticipants(participants: [CreateParticipantInput!]!): [Participant!]!
+    createParticipantGroup(input: CreateParticipantGroupInput!): CreateParticipantGroupPayload!
     createRemoteResource(remoteResource: CreateRemoteResourceInput!): RemoteResource!
     createSlice(input: CreateSliceInput!): CreateSlicePayload!
     createSurvey(input: CreateSurveyInput!): CreateSurveyPayload!
@@ -116,6 +122,8 @@ type Mutation {
     submitEnrollmentAnswers(input: SubmitEnrollmentAnswersInput!): SubmitEnrollmentAnswersPayload!
     unpublishSlice(input: UnpublishSliceInput!): UnpublishSlicePayload!
     updateExternalParticipants(participants: [UpdateParticipantInput!]!): [Participant!]!
+    updateParticipantGroupMembers(input: UpdateParticipantGroupMembersInput!): UpdateParticipantGroupMembersPayload!
+    updateParticipantGroupMetadata(input: UpdateParticipantGroupMetadataInput!): UpdateParticipantGroupMetadataPayload!
     updateRemoteResource(input: UpdateRemoteResourceInput!): UpdateRemoteResourcePayload!
     updateSliceDefinition(input: UpdateSliceDefinitionInput!): UpdateSliceDefinitionPayload!
     updateSliceMetadata(input: UpdateSliceMetadataInput!): UpdateSliceMetadataPayload!
@@ -155,6 +163,23 @@ type ParticipantEdge {
     node: Participant
 }
 
+type ParticipantGroup {
+    created: DateTime!
+    createdBy: User!
+    description: String
+    id: ID!
+    memberIds: [String!]
+    membersPage(filter: ParticipantFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage!
+    title: String!
+    type: ParticipantGroupType!
+    version: Int!
+}
+
+type ParticipantGroupsPage {
+    pagination: Pagination!
+    participantGroups: [ParticipantGroup!]!
+}
+
 type ParticipantsPage {
     pagination: Pagination!
     participants: [Participant!]!
@@ -175,6 +200,8 @@ type Query {
     enrollmentsPage(filter: EnrollmentFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): EnrollmentsPage!
     fetchRemoteResourceData(id: ID!): RemoteResourceData!
     me: User!
+    participantGroupById(id: ID!): ParticipantGroup
+    participantGroupsPage(filter: ParticipantGroupFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantGroupsPage!
     participants(after: String, filter: ParticipantFilter, first: Int!): ParticipantConnection!
     participantsPage(filter: ParticipantFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage
     participantsPageGeneric(filter: FilterSchema, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage
@@ -313,6 +340,16 @@ type UnpublishSlicePayload {
     userErrors: [UserError!]!
 }
 
+type UpdateParticipantGroupMembersPayload {
+    participantGroup: ParticipantGroup
+    userErrors: [UserError!]!
+}
+
+type UpdateParticipantGroupMetadataPayload {
+    participantGroup: ParticipantGroup
+    userErrors: [UserError!]!
+}
+
 type UpdateRemoteResourcePayload {
     remoteResource: RemoteResource
     userErrors: [UserError!]!
@@ -374,6 +411,11 @@ enum EnrollmentCompletionState {
 enum OrderByDirection {
     ASC
     DESC
+}
+
+enum ParticipantGroupType {
+    DYNAMIC
+    STATIC
 }
 
 enum ParticipantType {
@@ -441,6 +483,12 @@ input CompleteEnrollmentInput {
     version: Int!
 }
 
+input CreateParticipantGroupInput {
+    description: String
+    title: String!
+    type: ParticipantGroupType
+}
+
 input CreateParticipantInput {
     email: String!
     firstName: String!
@@ -497,6 +545,14 @@ input ParticipantFilter {
     participantType: ParticipantType
 }
 
+input ParticipantGroupFilter {
+    createdBetween: DateRange
+    createdByIds: [String]
+    descriptions: [String]
+    titles: [String]
+    types: [ParticipantGroupType]
+}
+
 input PublishSliceInput {
     id: ID!
     version: Int!
@@ -540,6 +596,19 @@ input SurveyHistoryFilter {
 
 input UnpublishSliceInput {
     id: ID!
+    version: Int!
+}
+
+input UpdateParticipantGroupMembersInput {
+    id: ID!
+    participantIds: [String!]!
+    version: Int!
+}
+
+input UpdateParticipantGroupMetadataInput {
+    description: String
+    id: ID!
+    title: String!
     version: Int!
 }
 

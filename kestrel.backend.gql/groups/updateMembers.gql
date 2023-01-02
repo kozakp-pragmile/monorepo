@@ -1,0 +1,21 @@
+mutation CreateStaticGroup {
+    updateParticipantGroupMembers(input: {
+        id: "a60009d1-f992-47c7-a811-e9d0f1e7b7ea",
+        version: 1,
+        participantIds: ["8b03b1e3-e862-4092-8731-e25829c2d26d", "b56e643b-e51d-4df6-95a6-ca4ae15ae26c"]
+    }) {
+        participantGroup {
+            id
+            version
+            type
+            title
+            description
+            created
+            createdBy {
+                id
+                email
+            }
+            memberIds
+        }
+    }
+}

@@ -1,0 +1,23 @@
+query ParticipantGroup {
+    participantGroupsPage {
+        participantGroups {
+            id
+            memberIds
+            membersPage {
+                participants {
+                    id
+                    firstName
+                    lastName
+                }
+                pagination {
+                    totalCount
+                }
+            }
+            title
+            description
+        }
+        pagination {
+            totalCount
+        }
+    }
+}

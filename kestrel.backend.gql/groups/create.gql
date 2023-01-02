@@ -1,0 +1,21 @@
+mutation CreateStaticGroup {
+    createParticipantGroup(input: {
+        title: "static-group",
+        description: "static-group-desc",
+        type: STATIC
+    }) {
+        participantGroup {
+            id
+            version
+            type
+            title
+            description
+            created
+            createdBy {
+                id
+                email
+            }
+            memberIds
+        }
+    }
+}
