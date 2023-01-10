@@ -1,21 +1,42 @@
-mutation CreateStaticGroup {
-    createParticipantGroup(input: {
+mutation CreateGroup {
+    static: createParticipantGroup(input: {
         title: "static-group",
         description: "static-group-desc",
         type: STATIC
     }) {
-        participantGroup {
+        ...PG
+    },
+    dynamic: createParticipantGroup(input: {
+        title: "static-group",
+        description: "static-group-desc",
+        type: DYNAMIC
+    }) {
+        ...PG
+    }
+}
+
+fragment PG on CreateParticipantGroupPayload {
+    participantGroup {
+        id
+        version
+        type
+        title
+        description
+        created
+        createdBy {
             id
-            version
-            type
-            title
-            description
-            created
-            createdBy {
+            email
+        }
+        memberIds
+        membersPage {
+            participants {
                 id
-                email
+                firstName
+                lastName
             }
-            memberIds
+            pagination {
+                totalCount
+            }
         }
     }
 }
