@@ -53,6 +53,10 @@ interface Node {
     id: ID!
 }
 
+interface SliceChangeDescription {
+    title: String!
+}
+
 interface SurveyChangeDescription {
     title: String!
 }
@@ -93,6 +97,7 @@ type Enrollment implements Node {
 }
 
 type EnrollmentSnapshot implements Node {
+    answers: AnswersSchema
     completed: DateTime
     completionState: EnrollmentCompletionState!
     due: DateTime!
@@ -122,6 +127,7 @@ type Mutation {
     submitEnrollmentAnswers(input: SubmitEnrollmentAnswersInput!): SubmitEnrollmentAnswersPayload!
     unpublishSlice(input: UnpublishSliceInput!): UnpublishSlicePayload!
     updateExternalParticipants(participants: [UpdateParticipantInput!]!): [Participant!]!
+    updateParticipantGroupMemberFilter(input: UpdateParticipantGroupMemberFilterInput!): UpdateParticipantGroupMemberFilterPayload!
     updateParticipantGroupMembers(input: UpdateParticipantGroupMembersInput!): UpdateParticipantGroupMembersPayload!
     updateParticipantGroupMetadata(input: UpdateParticipantGroupMetadataInput!): UpdateParticipantGroupMetadataPayload!
     updateRemoteResource(input: UpdateRemoteResourceInput!): UpdateRemoteResourcePayload!
@@ -168,8 +174,9 @@ type ParticipantGroup {
     createdBy: User!
     description: String
     id: ID!
+    memberFilter: FilterSchema
     memberIds: [String!]
-    membersPage(filter: ParticipantFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage!
+    membersPage(filter: FilterSchema, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage!
     title: String!
     type: ParticipantGroupType!
     version: Int!
@@ -209,6 +216,7 @@ type Query {
     remoteResources(after: String, filter: RemoteResourceFilter, first: Int!): RemoteResourceConnection!
     remoteResourcesPage(filter: RemoteResourceFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): RemoteResourcesPage
     sliceById(id: ID!): Slice
+    sliceHistoryPage(filter: SliceHistoryFilter, id: ID!, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SliceHistoryPage!
     slicesPage(filter: SliceFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SlicesPage!
     surveyById(id: ID!): Survey
     surveyHistoryPage(filter: SurveyHistoryFilter, id: ID!, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SurveyHistoryPage!
@@ -259,6 +267,31 @@ type Slice implements Node {
     isPublished: Boolean!
     title: String!
     version: Int!
+}
+
+type SliceChange implements Node {
+    changed: DateTime!
+    changedBy: User!
+    description: SliceChangeDescription!
+    id: ID!
+    type: SliceChangeType!
+}
+
+type SliceChangeDescriptionDefinitions implements SliceChangeDescription {
+    newDefinition: DefinitionSchema
+    oldDefinition: DefinitionSchema
+    title: String!
+}
+
+type SliceChangeDescriptionJson implements SliceChangeDescription {
+    newJson: JSON
+    oldJson: JSON
+    title: String!
+}
+
+type SliceHistoryPage {
+    changes: [SliceChange!]!
+    pagination: Pagination!
 }
 
 type SliceSnapshot implements Node {
@@ -337,6 +370,11 @@ type SurveysPage {
 
 type UnpublishSlicePayload {
     slice: Slice
+    userErrors: [UserError!]!
+}
+
+type UpdateParticipantGroupMemberFilterPayload {
+    participantGroup: ParticipantGroup
     userErrors: [UserError!]!
 }
 
@@ -423,6 +461,13 @@ enum ParticipantType {
     INTERNAL
 }
 
+enum SliceChangeType {
+    DEFINITION
+    METADATA
+    PUBLISH
+    UNPUBLISH
+}
+
 enum SurveyChangeType {
     CANCEL
     DEFINITION
@@ -452,6 +497,8 @@ enum UserErrorCode {
     DEFINITION_SLICE_TOO_MANY_PAGES
     FORM_METADATA_ALREADY_CONNECTED_TO_DEFINITION
     FORM_METADATA_NOT_EXISTS
+    PARTICIPANT_GROUP_INVALID_TYPE_ON_MEMBERS_UPDATE
+    PARTICIPANT_GROUP_INVALID_TYPE_ON_MEMBER_FILTER_UPDATE
     SLICE_ALREADY_PUBLISHED
     SLICE_NOT_PUBLISHED
     SURVEY_END_DATE_BEFORE
@@ -564,6 +611,7 @@ input PublishSurveyInput {
 }
 
 input RemoteResourceFilter {
+    createdBetween: DateRange
     names: [String]
 }
 
@@ -573,6 +621,12 @@ input SliceFilter {
     descriptions: [String]
     published: Boolean
     titles: [String]
+}
+
+input SliceHistoryFilter {
+    changeTypes: [SliceChangeType]
+    changedBetween: DateRange
+    changedByIds: [String]
 }
 
 input SubmitEnrollmentAnswersInput {
@@ -596,6 +650,12 @@ input SurveyHistoryFilter {
 
 input UnpublishSliceInput {
     id: ID!
+    version: Int!
+}
+
+input UpdateParticipantGroupMemberFilterInput {
+    id: ID!
+    participantFilter: FilterSchema
     version: Int!
 }
 
