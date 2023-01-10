@@ -1,3 +1,44 @@
+# maven, sbt
+target/
+pom.xml.releaseBackup
+release.properties
+
+# maven wrapper
+.mvn/wrapper/*.java
+.mvn/wrapper/*.jar
+
 # intellij
-.idea/
 *.iml
+.idea
+out/
+
+# npm
+node_modules/
+.npmrc
+
+# bower
+bower_components/
+
+# gradle
+build/
+.gradle/
+
+# vagrant
+.vagrant/
+
+# log
+*.log
+
+# webpack
+bundle.js
+
+# local data
+.data/
+
+# python
+dist/
+venv/
+
+# symlinks
+.--external
+.--external-dropbox
