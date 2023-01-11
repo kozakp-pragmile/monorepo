@@ -1,8 +1,8 @@
 mutation UpdateParticipantGroupMemberFilter {
     updateParticipantGroupMemberFilter(input: {
-        id: "a60009d1-f992-47c7-a811-e9d0f1e7b7ea",
-        version: 1,
-        participantFilter: "{\"field\": \"firstName\", \"operator\": \"EQ\", \"value\": \"Piotr\"}"
+        id: "060a44ce-697a-49a2-83c6-32a5bac8593b",
+        version: 0,
+        participantFilter: "{\"items\": [{\"field\": \"firstName\", \"operator\": \"EQ\", \"value\": \"Piotr\"},{\"field\": \"firstName\", \"operator\": \"EQ\", \"value\": \"Piotr\"}], \"operator\": \"OR\"}"
     }) {
         participantGroup {
             id
