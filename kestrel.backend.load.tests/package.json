@@ -7,10 +7,11 @@
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
     "artillery": "^2.0.0-27",
-    "easygraphql-load-tester": "^2.0.5",
+    "artillery-plugin-faker": "^5.0.0",
     "graphql": "^16.6.0"
   },
   "scripts": {
-    "create-participants": "artillery run artillery.yml"
+    "create-participants-local": "artillery run artillery.yml",
+    "create-participants-iac-pko2": "artillery run --environment iac-pko2 artillery.yml"
   }
 }

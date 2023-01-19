@@ -1,23 +1,43 @@
 config:
   target: 'http://localhost:8085'
   phases:
-    - duration: 1
-      arrivalRate: 1
+    - duration: 10
+      arrivalRate: 10
       name: Create external participants
-  processor: './src/index.js'
+  plugins:
+    faker:
+      locale: en
+  variables:
+    firstName: "$faker.name.firstName"
+    lastName: "$faker.name.lastName"
+    email: "$faker.internet.email"
+  environments:
+    iac-pko2:
+        target: https://pko2.kes-team.corporater.dev
+        phases:
+          - duration: 600yuioplk
+            arrivalRate: 10
+            vuc: 10
+
 scenarios:
-  - name: 'GraphQL Query load test'
+  - name: "Create participants"
     flow:
-      - function: 'testCases'
-      - loop:
-          - post:
-              url: '/graphql'
-              headers:
-                Authorization: "Bearer eyJhbGciOiJSUzI1NiJ9.eyJjbGkiOiI0NTY3Iiwic3ViIjoiand0LWV4YW1wbGUiLCJhdWQiOiI0NTY3IiwibG4iOiJFeGFtcGxlIiwiZm4iOiJKV1QiLCJmaW5nZXJQcmludEhhc2giOiI3MDI0OTE0Y2MyNTFjZmU2OTZmOWYwZDg3NTdhNzA3ZTlhZDc3NTIzYmYzMDY5ZWRiODQ5N2M1NTFjMzUyNThhIiwiZ3IiOlsiRXZlcnlvbmUiXSwiZXhwIjoyMzc1MjIyNTM0LCJpYXQiOjE2NTUyMjI1MzQsImVtYWlsIjoiand0LWV4YW1wbGVAZXhhbXBsZS5jb20ifQ.Dox5PkcLaUuU3UYsj5vmNzt9czCVPfz4ptHaE_Z7pA4DvvZWyv0UPOBP9q9k2UCHZLR79Nqbw87o_b4MWweHAqNlXcuPQx36KIIwHn_K2ZH7Lw9vBGsGP5idEMo8OzPP5Fdx80v0jNyxVvqhVXpElmmIN5xY4mVfC-xkoM2HzGxt_QOD4vV98LajrM3Pu7bDyFFaKIaPWGBDMpfVSxK3mQpVD3IJmu7lLtOolc3o_ykkSLnXlUM_NJSHnuDxaMe7IMjYB5m5k-GZEat85YSXhpgXKI_-r4-Wv8OJMOtSM3lToW50SP1Amub313QHhrLF-0IojlGqU7dWeJdVWSkULQ"
-              json:
-                query: '{{ $loopElement.query }}'
-                variables: '{{ $loopElement.variables }}'
-          - log: '----------------------------------'
-          - log: 'Sent a request to the {{ $loopElement.operation }}: {{ $loopElement.name }}'
-          - log: 'And variables {{ $loopElement.variables }}'
-        over: cases
+      - post:
+          url: "/graphql"
+          headers:
+            Authorization: "Bearer {{ $processEnvironment.KESTREL_TOKEN }}"
+          json:
+            query: |
+              mutation CreateParticipant($firstName: String!, $lastName: String!, $email: String!) {
+                createExternalParticipants(participants: [{
+                  firstName: $firstName,
+                  lastName: $lastName,
+                  email: $email
+                }]) {
+                  id
+                }
+              }
+            variables:
+              firstName: "{{ firstName }}"
+              lastName: "{{ lastName }}"
+              email: "{{ email }}"
