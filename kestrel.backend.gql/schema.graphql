@@ -1,8 +1,8 @@
 # This file was generated based on ".graphqlconfig". Do not edit manually.
 
 schema {
-    query: Query
-    mutation: Mutation
+  query: Query
+  mutation: Mutation
 }
 
 directive @AssertFalse(message: String = "graphql.validation.AssertFalse.message") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
@@ -50,466 +50,541 @@ directive @NotAfter(message: String = "{path} should not be after than the refer
 directive @NotBefore(message: String = "{path} should not be before than the referenced element", ref: String) on INPUT_FIELD_DEFINITION
 
 interface Node {
-    id: ID!
+  id: ID!
 }
 
 interface SliceChangeDescription {
-    title: String!
+  title: String!
 }
 
 interface SurveyChangeDescription {
-    title: String!
+  title: String!
+}
+
+type Answer {
+  text: String!
 }
 
 type CompleteEnrollmentPayload {
-    enrollment: Enrollment
-    userErrors: [UserError!]!
+  enrollment: Enrollment
+  userErrors: [UserError!]!
 }
 
 type CreateParticipantGroupPayload {
-    participantGroup: ParticipantGroup
-    userErrors: [UserError!]!
+  participantGroup: ParticipantGroup
+  userErrors: [UserError!]!
+}
+
+type CreateRecurringSurveyPayload {
+  recurringSurvey: RecurringSurvey
+  userErrors: [UserError!]!
 }
 
 type CreateSlicePayload {
-    slice: Slice
-    userErrors: [UserError!]!
+  slice: Slice
+  userErrors: [UserError!]!
 }
 
 type CreateSurveyPayload {
-    survey: Survey
-    userErrors: [UserError!]!
+  survey: Survey
+  userErrors: [UserError!]!
 }
 
 type Enrollment implements Node {
-    answers: AnswersSchema
-    completed: DateTime
-    completionState: EnrollmentCompletionState!
-    created: DateTime!
-    definition: DefinitionSchema!
-    description: String
-    ended: DateTime!
-    id: ID!
-    started: DateTime!
-    surveyType: SurveyType!
-    title: String!
-    version: Int!
+  answers: AnswersSchema
+  completed: DateTime
+  completionState: EnrollmentCompletionState!
+  created: DateTime!
+  definition: DefinitionSchema!
+  description: String
+  ended: DateTime!
+  id: ID!
+  started: DateTime!
+  surveyType: SurveyType!
+  title: String!
+  version: Int!
 }
 
 type EnrollmentSnapshot implements Node {
-    answers: AnswersSchema
-    completed: DateTime
-    completionState: EnrollmentCompletionState!
-    due: DateTime!
-    id: ID!
-    participant: Participant!
-    respondedName: String!
-    started: DateTime!
-    surveyType: SurveyType!
-    title: String!
+  answers: AnswersSchema
+  completed: DateTime
+  completionState: EnrollmentCompletionState!
+  due: DateTime!
+  id: ID!
+  participant: Participant!
+  respondedName: String!
+  responses: Responses!
+  started: DateTime!
+  surveyType: SurveyType!
+  title: String!
 }
 
 type EnrollmentsPage {
-    enrollments: [EnrollmentSnapshot!]!
-    pagination: Pagination!
+  enrollments: [EnrollmentSnapshot!]!
+  pagination: Pagination!
+}
+
+type FileAnswer {
+  content: String!
+  name: String!
+  type: String!
+}
+
+type FileResponse {
+  answer: [FileAnswer!]!
+  order: Int!
+  question: Question!
 }
 
 type Mutation {
-    completeEnrollment(input: CompleteEnrollmentInput!): CompleteEnrollmentPayload!
-    createExternalParticipants(participants: [CreateParticipantInput!]!): [Participant!]!
-    createParticipantGroup(input: CreateParticipantGroupInput!): CreateParticipantGroupPayload!
-    createRemoteResource(remoteResource: CreateRemoteResourceInput!): RemoteResource!
-    createSlice(input: CreateSliceInput!): CreateSlicePayload!
-    createSurvey(input: CreateSurveyInput!): CreateSurveyPayload!
-    publishSlice(input: PublishSliceInput!): PublishSlicePayload!
-    publishSurvey(input: PublishSurveyInput!): PublishSurveyPayload!
-    removeParticipants(ids: [ID!]!): RemoveParticipantsPayload
-    submitEnrollmentAnswers(input: SubmitEnrollmentAnswersInput!): SubmitEnrollmentAnswersPayload!
-    unpublishSlice(input: UnpublishSliceInput!): UnpublishSlicePayload!
-    updateExternalParticipants(participants: [UpdateParticipantInput!]!): [Participant!]!
-    updateParticipantGroupMemberFilter(input: UpdateParticipantGroupMemberFilterInput!): UpdateParticipantGroupMemberFilterPayload!
-    updateParticipantGroupMembers(input: UpdateParticipantGroupMembersInput!): UpdateParticipantGroupMembersPayload!
-    updateParticipantGroupMetadata(input: UpdateParticipantGroupMetadataInput!): UpdateParticipantGroupMetadataPayload!
-    updateRemoteResource(input: UpdateRemoteResourceInput!): UpdateRemoteResourcePayload!
-    updateSliceDefinition(input: UpdateSliceDefinitionInput!): UpdateSliceDefinitionPayload!
-    updateSliceMetadata(input: UpdateSliceMetadataInput!): UpdateSliceMetadataPayload!
-    updateSurveyDefinition(input: UpdateSurveyDefinitionInput!): UpdateSurveyDefinitionPayload!
-    updateSurveyDistribution(input: UpdateSurveyDistributionInput!): UpdateSurveyDistributionPayload!
-    updateSurveyMetadata(input: UpdateSurveyMetadataInput!): UpdateSurveyMetadataPayload!
+  completeEnrollment(input: CompleteEnrollmentInput!): CompleteEnrollmentPayload!
+  createExternalParticipants(participants: [CreateParticipantInput!]!): [Participant!]!
+  createParticipantGroup(input: CreateParticipantGroupInput!): CreateParticipantGroupPayload!
+  createRecurringSurvey(input: CreateRecurringSurveyInput!): CreateRecurringSurveyPayload!
+  createRemoteResource(remoteResource: CreateRemoteResourceInput!): RemoteResource!
+  createSlice(input: CreateSliceInput!): CreateSlicePayload!
+  createSurvey(input: CreateSurveyInput!): CreateSurveyPayload!
+  publishSlice(input: PublishSliceInput!): PublishSlicePayload!
+  publishSurvey(input: PublishSurveyInput!): PublishSurveyPayload!
+  removeParticipants(ids: [ID!]!): RemoveParticipantsPayload
+  submitEnrollmentAnswers(input: SubmitEnrollmentAnswersInput!): SubmitEnrollmentAnswersPayload!
+  unpublishSlice(input: UnpublishSliceInput!): UnpublishSlicePayload!
+  updateExternalParticipants(participants: [UpdateParticipantInput!]!): [Participant!]!
+  updateParticipantGroupMemberFilter(input: UpdateParticipantGroupMemberFilterInput!): UpdateParticipantGroupMemberFilterPayload!
+  updateParticipantGroupMembers(input: UpdateParticipantGroupMembersInput!): UpdateParticipantGroupMembersPayload!
+  updateParticipantGroupMetadata(input: UpdateParticipantGroupMetadataInput!): UpdateParticipantGroupMetadataPayload!
+  updateRemoteResource(input: UpdateRemoteResourceInput!): UpdateRemoteResourcePayload!
+  updateSliceDefinition(input: UpdateSliceDefinitionInput!): UpdateSliceDefinitionPayload!
+  updateSliceMetadata(input: UpdateSliceMetadataInput!): UpdateSliceMetadataPayload!
+  updateSurveyDefinition(input: UpdateSurveyDefinitionInput!): UpdateSurveyDefinitionPayload!
+  updateSurveyDistribution(input: UpdateSurveyDistributionInput!): UpdateSurveyDistributionPayload!
+  updateSurveyMetadata(input: UpdateSurveyMetadataInput!): UpdateSurveyMetadataPayload!
 }
 
 type PageInfo {
-    endCursor: String
-    hasNextPage: Boolean!
-    hasPreviousPage: Boolean!
-    startCursor: String
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 type Pagination {
-    totalCount: Int!
+  totalCount: Int!
+}
+
+type Parent {
+  id: ID!
+}
+
+type ParentSurvey {
+  id: ID!
 }
 
 type Participant {
-    created: DateTime!
-    createdBy: User!
-    email: String!
-    firstName: String!
-    id: ID!
-    lastName: String!
-    participantType: ParticipantType!
+  created: DateTime!
+  createdBy: User!
+  email: String!
+  firstName: String!
+  id: ID!
+  lastName: String!
+  participantType: ParticipantType!
 }
 
 type ParticipantConnection {
-    edges: [ParticipantEdge]
-    pageInfo: PageInfo
+  edges: [ParticipantEdge]
+  pageInfo: PageInfo
 }
 
 type ParticipantEdge {
-    cursor: String
-    node: Participant
+  cursor: String
+  node: Participant
 }
 
 type ParticipantGroup {
-    created: DateTime!
-    createdBy: User!
-    description: String
-    id: ID!
-    memberFilter: FilterSchema
-    memberIds: [String!]
-    membersPage(filter: FilterSchema, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage!
-    title: String!
-    type: ParticipantGroupType!
-    version: Int!
+  created: DateTime!
+  createdBy: User!
+  description: String
+  id: ID!
+  memberFilter: FilterSchema
+  memberIds: [String!]
+  membersPage(filter: FilterSchema, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage!
+  title: String!
+  type: ParticipantGroupType!
+  version: Int!
+}
+
+type ParticipantGroupConnection {
+  edges: [ParticipantGroupEdge]
+  pageInfo: PageInfo
+}
+
+type ParticipantGroupEdge {
+  cursor: String
+  node: ParticipantGroup
 }
 
 type ParticipantGroupsPage {
-    pagination: Pagination!
-    participantGroups: [ParticipantGroup!]!
+  pagination: Pagination!
+  participantGroups: [ParticipantGroup!]!
 }
 
 type ParticipantsPage {
-    pagination: Pagination!
-    participants: [Participant!]!
+  pagination: Pagination!
+  participants: [Participant!]!
 }
 
 type PublishSlicePayload {
-    slice: Slice
-    userErrors: [UserError!]!
+  slice: Slice
+  userErrors: [UserError!]!
 }
 
 type PublishSurveyPayload {
-    survey: Survey
-    userErrors: [UserError!]!
+  survey: Survey
+  userErrors: [UserError!]!
 }
 
 type Query {
-    enrollmentById(id: ID!): Enrollment
-    enrollmentsPage(filter: EnrollmentFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): EnrollmentsPage!
-    fetchRemoteResourceData(id: ID!): RemoteResourceData!
-    me: User!
-    participantGroupById(id: ID!): ParticipantGroup
-    participantGroupsPage(filter: ParticipantGroupFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantGroupsPage!
-    participants(after: String, filter: ParticipantFilter, first: Int!): ParticipantConnection!
-    participantsPage(filter: ParticipantFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage
-    participantsPageGeneric(filter: FilterSchema, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage
-    remoteResourceById(id: ID!): RemoteResource!
-    remoteResources(after: String, filter: RemoteResourceFilter, first: Int!): RemoteResourceConnection!
-    remoteResourcesPage(filter: RemoteResourceFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): RemoteResourcesPage
-    sliceById(id: ID!): Slice
-    sliceHistoryPage(filter: SliceHistoryFilter, id: ID!, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SliceHistoryPage!
-    slicesPage(filter: SliceFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SlicesPage!
-    surveyById(id: ID!): Survey
-    surveyHistoryPage(filter: SurveyHistoryFilter, id: ID!, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SurveyHistoryPage!
-    surveysPage(filter: SurveyFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SurveysPage!
-    users(after: String, filter: UserFilter, first: Int!): UserConnection!
+  enrollmentById(id: ID!): Enrollment
+  enrollmentsPage(filter: EnrollmentFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): EnrollmentsPage!
+  fetchRemoteResourceData(id: ID!): RemoteResourceData!
+  me: User!
+  participantGroupById(id: ID!): ParticipantGroup
+  participantGroups(after: String, filter: ParticipantGroupFilter, first: Int!): ParticipantGroupConnection!
+  participantGroupsPage(filter: ParticipantGroupFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantGroupsPage!
+  participants(after: String, filter: ParticipantFilter, first: Int!): ParticipantConnection!
+  participantsPage(filter: ParticipantFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage
+  participantsPageGeneric(filter: FilterSchema, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage
+  recurringSurveyById(id: ID!): RecurringSurvey
+  remoteResourceById(id: ID!): RemoteResource!
+  remoteResources(after: String, filter: RemoteResourceFilter, first: Int!): RemoteResourceConnection!
+  remoteResourcesPage(filter: RemoteResourceFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): RemoteResourcesPage
+  sliceById(id: ID!): Slice
+  sliceHistoryPage(filter: SliceHistoryFilter, id: ID!, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SliceHistoryPage!
+  slicesPage(filter: SliceFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SlicesPage!
+  surveyById(id: ID!): Survey
+  surveyHistoryPage(filter: SurveyHistoryFilter, id: ID!, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SurveyHistoryPage!
+  surveysPage(filter: SurveyFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SurveysPage!
+  users(after: String, filter: UserFilter, first: Int!): UserConnection!
+}
+
+type Question {
+  name: String!
+  title: String!
+}
+
+type RecurringSurvey implements Node {
+  created: DateTime!
+  createdBy: User!
+  definition: DefinitionSchema
+  description: String
+  id: ID!
+  participants: [Participant]!
+  title: String!
+  version: Int!
 }
 
 type RemoteResource {
-    createdBy: User!
-    id: ID!
-    name: String!
-    url: String!
+  createdBy: User!
+  id: ID!
+  name: String!
+  url: String!
 }
 
 type RemoteResourceConnection {
-    edges: [RemoteResourceEdge]
-    pageInfo: PageInfo
+  edges: [RemoteResourceEdge]
+  pageInfo: PageInfo
 }
 
 type RemoteResourceData {
-    id: ID!
-    json: String
-    name: String!
-    url: String!
+  id: ID!
+  json: String
+  name: String!
+  url: String!
 }
 
 type RemoteResourceEdge {
-    cursor: String
-    node: RemoteResource
+  cursor: String
+  node: RemoteResource
 }
 
 type RemoteResourcesPage {
-    pagination: Pagination!
-    remoteResources: [RemoteResource!]!
+  pagination: Pagination!
+  remoteResources: [RemoteResource!]!
 }
 
 type RemoveParticipantsPayload {
-    nRemoved: Int
-    participants: [Participant!]!
+  nRemoved: Int
+  participants: [Participant!]!
+}
+
+type Responses {
+  file: [FileResponse!]!
+  text: [TextResponse!]!
 }
 
 type Slice implements Node {
-    created: DateTime!
-    createdBy: User!
-    definition: DefinitionSchema
-    description: String
-    id: ID!
-    isPublished: Boolean!
-    title: String!
-    version: Int!
+  created: DateTime!
+  createdBy: User!
+  definition: DefinitionSchema
+  description: String
+  id: ID!
+  isPublished: Boolean!
+  title: String!
+  version: Int!
 }
 
 type SliceChange implements Node {
-    changed: DateTime!
-    changedBy: User!
-    description: SliceChangeDescription!
-    id: ID!
-    type: SliceChangeType!
+  changed: DateTime!
+  changedBy: User!
+  description: SliceChangeDescription!
+  id: ID!
+  type: SliceChangeType!
 }
 
 type SliceChangeDescriptionDefinitions implements SliceChangeDescription {
-    newDefinition: DefinitionSchema
-    oldDefinition: DefinitionSchema
-    title: String!
+  newDefinition: DefinitionSchema
+  oldDefinition: DefinitionSchema
+  title: String!
 }
 
 type SliceChangeDescriptionJson implements SliceChangeDescription {
-    newJson: JSON
-    oldJson: JSON
-    title: String!
+  newJson: JSON
+  oldJson: JSON
+  title: String!
 }
 
 type SliceHistoryPage {
-    changes: [SliceChange!]!
-    pagination: Pagination!
+  changes: [SliceChange!]!
+  pagination: Pagination!
 }
 
 type SliceSnapshot implements Node {
-    created: DateTime!
-    createdBy: User!
-    definition: DefinitionSchema
-    description: String
-    id: ID!
-    isPublished: Boolean
-    title: String!
-    version: Int
+  created: DateTime!
+  createdBy: User!
+  definition: DefinitionSchema
+  description: String
+  id: ID!
+  isPublished: Boolean
+  title: String!
+  version: Int
 }
 
 type SlicesPage {
-    pagination: Pagination!
-    slices: [SliceSnapshot!]!
+  pagination: Pagination!
+  slices: [SliceSnapshot!]!
 }
 
 type SubmitEnrollmentAnswersPayload {
-    enrollment: Enrollment
-    userErrors: [UserError!]!
+  enrollment: Enrollment
+  userErrors: [UserError!]!
 }
 
 type Survey implements Node {
-    created: DateTime!
-    createdBy: User!
-    definition: DefinitionSchema
-    description: String
-    endDate: DateTime
-    id: ID!
-    participants: [Participant]
-    startDate: DateTime
-    state: SurveyState!
-    title: String!
-    version: Int!
+  created: DateTime!
+  createdBy: User!
+  definition: DefinitionSchema
+  description: String
+  endDate: DateTime
+  id: ID!
+  participantGroups: [ParticipantGroup!]
+  participants: [Participant!]
+  startDate: DateTime
+  state: SurveyState!
+  title: String!
+  version: Int!
 }
 
 type SurveyChange implements Node {
-    changed: DateTime!
-    changedBy: User!
-    description: SurveyChangeDescription!
-    id: ID!
-    type: SurveyChangeType!
+  changed: DateTime!
+  changedBy: User!
+  description: SurveyChangeDescription!
+  id: ID!
+  type: SurveyChangeType!
 }
 
 type SurveyChangeDescriptionDefinitions implements SurveyChangeDescription {
-    newDefinition: DefinitionSchema
-    oldDefinition: DefinitionSchema
-    title: String!
+  newDefinition: DefinitionSchema
+  oldDefinition: DefinitionSchema
+  title: String!
 }
 
 type SurveyChangeDescriptionJson implements SurveyChangeDescription {
-    newJson: JSON
-    oldJson: JSON
-    title: String!
+  newJson: JSON
+  oldJson: JSON
+  title: String!
 }
 
 type SurveyHistoryPage {
-    changes: [SurveyChange!]!
-    pagination: Pagination!
+  changes: [SurveyChange!]!
+  pagination: Pagination!
 }
 
 type SurveySnapshot implements Node {
-    created: DateTime!
-    createdBy: User!
-    description: String
-    id: ID!
-    state: SurveyState!
-    title: String!
+  created: DateTime!
+  createdBy: User!
+  description: String
+  id: ID!
+  state: SurveyState!
+  title: String!
 }
 
 type SurveysPage {
-    pagination: Pagination!
-    surveys: [SurveySnapshot!]!
+  pagination: Pagination!
+  surveys: [SurveySnapshot!]!
+}
+
+type TextAnswer {
+  text: String!
+}
+
+type TextResponse {
+  answer: TextAnswer
+  question: Question!
 }
 
 type UnpublishSlicePayload {
-    slice: Slice
-    userErrors: [UserError!]!
+  slice: Slice
+  userErrors: [UserError!]!
 }
 
 type UpdateParticipantGroupMemberFilterPayload {
-    participantGroup: ParticipantGroup
-    userErrors: [UserError!]!
+  participantGroup: ParticipantGroup
+  userErrors: [UserError!]!
 }
 
 type UpdateParticipantGroupMembersPayload {
-    participantGroup: ParticipantGroup
-    userErrors: [UserError!]!
+  participantGroup: ParticipantGroup
+  userErrors: [UserError!]!
 }
 
 type UpdateParticipantGroupMetadataPayload {
-    participantGroup: ParticipantGroup
-    userErrors: [UserError!]!
+  participantGroup: ParticipantGroup
+  userErrors: [UserError!]!
 }
 
 type UpdateRemoteResourcePayload {
-    remoteResource: RemoteResource
-    userErrors: [UserError!]!
+  remoteResource: RemoteResource
+  userErrors: [UserError!]!
 }
 
 type UpdateSliceDefinitionPayload {
-    slice: Slice
-    userErrors: [UserError!]!
+  slice: Slice
+  userErrors: [UserError!]!
 }
 
 type UpdateSliceMetadataPayload {
-    slice: Slice!
+  slice: Slice!
 }
 
 type UpdateSurveyDefinitionPayload {
-    survey: Survey
-    userErrors: [UserError!]!
+  survey: Survey
+  userErrors: [UserError!]!
 }
 
 type UpdateSurveyDistributionPayload {
-    survey: Survey
-    userErrors: [UserError!]!
+  survey: Survey
+  userErrors: [UserError!]!
 }
 
 type UpdateSurveyMetadataPayload {
-    survey: Survey
-    userErrors: [UserError!]!
+  survey: Survey
+  userErrors: [UserError!]!
 }
 
 type User implements Node {
-    displayName: String!
-    email: String!
-    id: ID!
-    phoneNumber: String!
+  displayName: String!
+  email: String!
+  id: ID!
+  phoneNumber: String!
 }
 
 type UserConnection {
-    edges: [UserEdge]
-    pageInfo: PageInfo
+  edges: [UserEdge]
+  pageInfo: PageInfo
 }
 
 type UserEdge {
-    cursor: String
-    node: User
+  cursor: String
+  node: User
 }
 
 type UserError {
-    code: UserErrorCode!
-    message: String!
-    path: [String!]
+  code: UserErrorCode!
+  message: String!
+  path: [String!]
 }
 
 enum EnrollmentCompletionState {
-    COMPLETED
-    DRAFT
-    NEW
+  COMPLETED
+  DRAFT
+  NEW
 }
 
 enum OrderByDirection {
-    ASC
-    DESC
+  ASC
+  DESC
 }
 
 enum ParticipantGroupType {
-    DYNAMIC
-    STATIC
+  DYNAMIC
+  STATIC
 }
 
 enum ParticipantType {
-    EXTERNAL
-    INTERNAL
+  EXTERNAL
+  INTERNAL
 }
 
 enum SliceChangeType {
-    DEFINITION
-    METADATA
-    PUBLISH
-    UNPUBLISH
+  DEFINITION
+  METADATA
+  PUBLISH
+  UNPUBLISH
 }
 
 enum SurveyChangeType {
-    CANCEL
-    DEFINITION
-    DELETE
-    DISTRIBUTION
-    METADATA
-    PUBLISH
-    SLICE
+  CANCEL
+  DEFINITION
+  DELETE
+  DISTRIBUTION
+  METADATA
+  PUBLISH
+  SLICE
 }
 
 enum SurveyState {
-    CANCELED
-    DELETED
-    PUBLISHED
-    UNPUBLISHED
+  CANCELED
+  DELETED
+  PUBLISHED
+  UNPUBLISHED
 }
 
 enum SurveyType {
-    RECURRING_SURVEY
-    SURVEY
+  RECURRING_SURVEY
+  SURVEY
 }
 
 enum UserErrorCode {
-    DEFINITION_INVALID_JSON
-    DEFINITION_SLICE_CONTAINS_PAGES
-    DEFINITION_SLICE_INVALID_JSON
-    DEFINITION_SLICE_TOO_MANY_PAGES
-    FORM_METADATA_ALREADY_CONNECTED_TO_DEFINITION
-    FORM_METADATA_NOT_EXISTS
-    PARTICIPANT_GROUP_INVALID_TYPE_ON_MEMBERS_UPDATE
-    PARTICIPANT_GROUP_INVALID_TYPE_ON_MEMBER_FILTER_UPDATE
-    SLICE_ALREADY_PUBLISHED
-    SLICE_NOT_PUBLISHED
-    SURVEY_END_DATE_BEFORE
-    SURVEY_INVALID_STATE_ON_PUBLISH
-    SURVEY_INVALID_STATE_ON_UPDATE
-    SURVEY_NOT_UNPUBLISHED
-    SURVEY_NO_DEFINITION_ON_PUBLISH
-    SURVEY_NO_DISTRIBUTION_ON_PUBLISH
-    SURVEY_NO_PARTICIPANTS
-    SURVEY_START_DATE_ELAPSED
-    SURVEY_START_PARTICIPANT_REMOVED_ON_PUBLISHED
+  DEFINITION_INVALID_JSON
+  DEFINITION_SLICE_CONTAINS_PAGES
+  DEFINITION_SLICE_INVALID_JSON
+  DEFINITION_SLICE_TOO_MANY_PAGES
+  FORM_METADATA_ALREADY_CONNECTED_TO_DEFINITION
+  FORM_METADATA_NOT_EXISTS
+  PARTICIPANT_GROUP_INVALID_TYPE_ON_MEMBERS_UPDATE
+  PARTICIPANT_GROUP_INVALID_TYPE_ON_MEMBER_FILTER_UPDATE
+  SLICE_ALREADY_PUBLISHED
+  SLICE_NOT_PUBLISHED
+  SURVEY_END_DATE_BEFORE
+  SURVEY_INVALID_STATE_ON_PUBLISH
+  SURVEY_INVALID_STATE_ON_UPDATE
+  SURVEY_NOT_UNPUBLISHED
+  SURVEY_NO_DEFINITION_ON_PUBLISH
+  SURVEY_NO_DISTRIBUTION_ON_PUBLISH
+  SURVEY_NO_PARTICIPANTS
+  SURVEY_PARTICIPANT_GROUP_REMOVED_FOR_PUBLISHED_AFTER_START_DAT
+  SURVEY_PARTICIPANT_REMOVED_FOR_PUBLISHED_AFTER_START_DATE
+  SURVEY_START_DATE_ELAPSED
 }
 
 scalar AnswersSchema
@@ -525,202 +600,213 @@ scalar FilterSchema
 scalar JSON
 
 input CompleteEnrollmentInput {
-    answers: JSON!
-    id: ID!
-    version: Int!
+  answers: JSON!
+  id: ID!
+  version: Int!
 }
 
 input CreateParticipantGroupInput {
-    description: String
-    title: String!
-    type: ParticipantGroupType
+  description: String
+  title: String!
+  type: ParticipantGroupType
 }
 
 input CreateParticipantInput {
-    email: String!
-    firstName: String!
-    lastName: String!
+  email: String!
+  firstName: String!
+  lastName: String!
+}
+
+input CreateRecurringSurveyInput {
+  description: String
+  title: String!
 }
 
 input CreateRemoteResourceInput {
-    name: String!
-    password: String!
-    url: String!
-    username: String!
+  name: String!
+  password: String!
+  url: String!
+  username: String!
 }
 
 input CreateSliceInput {
-    description: String
-    title: String!
+  description: String
+  title: String!
 }
 
 input CreateSurveyInput {
-    description: String
-    title: String!
+  description: String
+  title: String!
 }
 
 input DateRange {
-    from: DateTime
-    to: DateTime
+  from: DateTime
+  to: DateTime
 }
 
 input EnrollmentFilter {
-    completedBetween: DateRange
-    completionStates: [EnrollmentCompletionState]
-    dueBetween: DateRange
-    startedBetween: DateRange
-    surveyIds: [String]
-    titles: [String]
-    types: [SurveyType]
+  completedBetween: DateRange
+  completionStates: [EnrollmentCompletionState]
+  dueBetween: DateRange
+  startedBetween: DateRange
+  surveyIds: [String]
+  titles: [String]
+  types: [SurveyType]
+}
+
+input IdAndVersion {
+  id: String!
+  version: Int!
 }
 
 input OffsetAndLimit {
-    limit: Int!
-    offset: Int!
+  limit: Int!
+  offset: Int!
 }
 
 input OrderBy {
-    direction: OrderByDirection!
-    field: String!
+  direction: OrderByDirection!
+  field: String!
 }
 
 input ParticipantFilter {
-    emails: [String]
-    firstNames: [String]
-    lastNames: [String]
-    names: [String]
-    participantType: ParticipantType
+  emails: [String]
+  firstNames: [String]
+  lastNames: [String]
+  names: [String]
+  participantType: ParticipantType
 }
 
 input ParticipantGroupFilter {
-    createdBetween: DateRange
-    createdByIds: [String]
-    descriptions: [String]
-    titles: [String]
-    types: [ParticipantGroupType]
+  createdBetween: DateRange
+  createdByIds: [String]
+  descriptions: [String]
+  titles: [String]
+  types: [ParticipantGroupType]
 }
 
 input PublishSliceInput {
-    id: ID!
-    version: Int!
+  id: ID!
+  version: Int!
 }
 
 input PublishSurveyInput {
-    id: ID!
-    version: Int!
+  id: ID!
+  version: Int!
 }
 
 input RemoteResourceFilter {
-    createdBetween: DateRange
-    names: [String]
+  createdBetween: DateRange
+  names: [String]
 }
 
 input SliceFilter {
-    createdBetween: DateRange
-    createdByIds: [String]
-    descriptions: [String]
-    published: Boolean
-    titles: [String]
+  createdBetween: DateRange
+  createdByIds: [String]
+  descriptions: [String]
+  published: Boolean
+  titles: [String]
 }
 
 input SliceHistoryFilter {
-    changeTypes: [SliceChangeType]
-    changedBetween: DateRange
-    changedByIds: [String]
+  changeTypes: [SliceChangeType]
+  changedBetween: DateRange
+  changedByIds: [String]
 }
 
 input SubmitEnrollmentAnswersInput {
-    answers: JSON!
-    id: ID!
-    version: Int!
+  answers: JSON!
+  id: ID!
+  version: Int!
 }
 
 input SurveyFilter {
-    createdBetween: DateRange
-    createdByIds: [String]
-    descriptions: [String]
-    titles: [String]
+  createdBetween: DateRange
+  createdByIds: [String]
+  descriptions: [String]
+  titles: [String]
 }
 
 input SurveyHistoryFilter {
-    changeTypes: [SurveyChangeType]
-    changedBetween: DateRange
-    changedByIds: [String]
+  changeTypes: [SurveyChangeType]
+  changedBetween: DateRange
+  changedByIds: [String]
 }
 
 input UnpublishSliceInput {
-    id: ID!
-    version: Int!
+  id: ID!
+  version: Int!
 }
 
 input UpdateParticipantGroupMemberFilterInput {
-    id: ID!
-    participantFilter: FilterSchema
-    version: Int!
+  id: ID!
+  participantFilter: FilterSchema
+  version: Int!
 }
 
 input UpdateParticipantGroupMembersInput {
-    id: ID!
-    participantIds: [String!]!
-    version: Int!
+  id: ID!
+  participantIds: [String!]!
+  version: Int!
 }
 
 input UpdateParticipantGroupMetadataInput {
-    description: String
-    id: ID!
-    title: String!
-    version: Int!
+  description: String
+  id: ID!
+  title: String!
+  version: Int!
 }
 
 input UpdateParticipantInput {
-    email: String!
-    firstName: String!
-    id: ID!
-    lastName: String!
+  email: String!
+  firstName: String!
+  id: ID!
+  lastName: String!
 }
 
 input UpdateRemoteResourceInput {
-    id: String!
-    name: String!
-    password: String!
-    url: String!
-    username: String!
+  id: String!
+  name: String!
+  password: String!
+  url: String!
+  username: String!
 }
 
 input UpdateSliceDefinitionInput {
-    definition: JSON!
-    id: ID!
-    version: Int!
+  definition: JSON!
+  id: ID!
+  version: Int!
 }
 
 input UpdateSliceMetadataInput {
-    description: String
-    id: ID!
-    title: String!
-    version: Int!
+  description: String
+  id: ID!
+  title: String!
+  version: Int!
 }
 
 input UpdateSurveyDefinitionInput {
-    definition: JSON!
-    id: ID!
-    version: Int!
+  definition: JSON!
+  id: ID!
+  version: Int!
 }
 
 input UpdateSurveyDistributionInput {
-    endDate: DateTime
-    id: ID!
-    participantIds: [String!]!
-    startDate: DateTime
-    version: Int!
+  endDate: DateTime
+  id: ID!
+  participantGroupIds: [IdAndVersion!]
+  participantIds: [String!]
+  startDate: DateTime
+  version: Int!
 }
 
 input UpdateSurveyMetadataInput {
-    description: String
-    id: ID!
-    title: String!
-    version: Int!
+  description: String
+  id: ID!
+  title: String!
+  version: Int!
 }
 
 input UserFilter {
-    displayNames: [String!]!
+  displayNames: [String!]!
 }
