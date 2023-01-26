@@ -1,0 +1,26 @@
+query ParticipantGroups {
+    first3: participantGroups(first: 3) {
+       ...PPP
+    }
+    next1: participantGroups(first: 1, after: "6d6bbe2ecaa11cc250afc1ee30515ad3b39492933f10d4748431296f2ebb4104") {
+      ...PPP
+    }
+}
+
+fragment PPP on ParticipantGroupConnection {
+  edges {
+    cursor
+    node {
+      id
+      version
+      title
+      description
+    }
+  }
+  pageInfo {
+    hasNextPage
+    hasPreviousPage
+    startCursor
+    endCursor
+  }
+}
