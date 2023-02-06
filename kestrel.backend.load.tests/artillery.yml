@@ -13,9 +13,9 @@ config:
     email: "$faker.internet.email"
   environments:
     iac-pko2:
-        target: https://pko2.kes-team.corporater.dev
+        target: https://pko4.kes-team.corporater.dev
         phases:
-          - duration: 600yuioplk
+          - duration: 600
             arrivalRate: 10
             vuc: 10
 
@@ -23,7 +23,7 @@ scenarios:
   - name: "Create participants"
     flow:
       - post:
-          url: "/graphql"
+          url: "/kestrel/api/graphql"
           headers:
             Authorization: "Bearer {{ $processEnvironment.KESTREL_TOKEN }}"
           json:
