@@ -1,0 +1,19 @@
+mutation CreateRecurringSurvey {
+    static: createRecurringSurvey(input: {
+        title: "recurring-survey",
+        description: "recurring-survey",
+    }) {
+        recurringSurvey {
+          id
+          version
+          title
+          description
+          definition
+          created
+          createdBy {
+            id
+            email
+          }
+        }
+    }
+}

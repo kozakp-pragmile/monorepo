@@ -1,0 +1,15 @@
+query RecurringSurvey {
+  recurringSurveyById(id: "2f7914fb-ed2d-4825-9358-d36eee975ee9") {
+    id
+    version
+    title
+    __typename
+    description
+    definition
+    createdBy {
+      id
+      displayName
+    }
+    created
+  }
+}
