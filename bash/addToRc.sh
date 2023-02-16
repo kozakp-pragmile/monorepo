@@ -24,3 +24,4 @@ function addSourcingFileToFile() {
 }
 
 addSourcingFileToFile "$HOME/.zshrc" "$HOME/.aliases"
+addSourcingFileToFile "$HOME/.bashrc" "$HOME/.aliases"
