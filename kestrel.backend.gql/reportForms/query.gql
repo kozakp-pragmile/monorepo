@@ -1,0 +1,11 @@
+query Report {
+  reportFormsPage {
+    reportForms {
+      id
+      state
+    }
+    pagination {
+      totalCount
+    }
+  }
+}

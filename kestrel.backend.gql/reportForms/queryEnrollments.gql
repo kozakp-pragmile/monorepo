@@ -1,0 +1,10 @@
+query Report {
+  reportFormEnrollmentsPage {
+    reportFormEnrollments {
+      id
+    }
+    pagination {
+      totalCount
+    }
+  }
+}

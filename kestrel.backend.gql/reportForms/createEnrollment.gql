@@ -1,0 +1,9 @@
+mutation createReportFormEnrollment {
+  createReportFormEnrollment(input: {reportFormId: "bd45e231-e0dc-432b-a997-3335dd02fc9c", answers: "{\"question1\": \"10\"}"}) {
+    reportFormEnrollment {
+      id
+      version
+      completionState
+    }
+  }
+}

@@ -65,8 +65,33 @@ type Answer {
   text: String!
 }
 
+type CancelRecurringSurveyPayload {
+  recurringSurvey: RecurringSurvey
+  userErrors: [UserError!]!
+}
+
+type CancelReportFormPayload {
+  reportForm: ReportForm
+  userErrors: [UserError!]!
+}
+
+type CheckboxAnswer {
+  choices: [String!]!
+}
+
+type CheckboxResponse {
+  answer: CheckboxAnswer!
+  order: Int!
+  question: Question!
+}
+
 type CompleteEnrollmentPayload {
   enrollment: Enrollment
+  userErrors: [UserError!]!
+}
+
+type CompleteReportFormEnrollmentPayload {
+  reportFormEnrollment: ReportFormEnrollment
   userErrors: [UserError!]!
 }
 
@@ -80,6 +105,16 @@ type CreateRecurringSurveyPayload {
   userErrors: [UserError!]!
 }
 
+type CreateReportFormEnrollmentPayload {
+  reportFormEnrollment: ReportFormEnrollment
+  userErrors: [UserError!]!
+}
+
+type CreateReportFormPayload {
+  reportForm: ReportForm
+  userErrors: [UserError!]!
+}
+
 type CreateSlicePayload {
   slice: Slice
   userErrors: [UserError!]!
@@ -88,6 +123,16 @@ type CreateSlicePayload {
 type CreateSurveyPayload {
   survey: Survey
   userErrors: [UserError!]!
+}
+
+type DropdownAnswer {
+  choice: String!
+}
+
+type DropdownResponse {
+  answer: DropdownAnswer!
+  order: Int!
+  question: Question!
 }
 
 type Enrollment implements Node {
@@ -137,23 +182,39 @@ type FileResponse {
 }
 
 type Mutation {
+  cancelRecurringSurvey(input: CancelRecurringSurveyInput!): CancelRecurringSurveyPayload!
+  cancelReportForm(input: CancelReportFormInput!): CancelReportFormPayload!
   completeEnrollment(input: CompleteEnrollmentInput!): CompleteEnrollmentPayload!
+  completeEnrollmentToken(input: CompleteEnrollmentTokenInput!): CompleteEnrollmentPayload!
+  completeReportFormEnrollment(input: CompleteReportFormEnrollmentInput!): CompleteReportFormEnrollmentPayload!
+  createCompletedReportFormEnrollment(input: CreateReportFormEnrollmentInput!): CreateReportFormEnrollmentPayload!
   createExternalParticipants(participants: [CreateParticipantInput!]!): [Participant!]!
   createParticipantGroup(input: CreateParticipantGroupInput!): CreateParticipantGroupPayload!
   createRecurringSurvey(input: CreateRecurringSurveyInput!): CreateRecurringSurveyPayload!
   createRemoteResource(remoteResource: CreateRemoteResourceInput!): RemoteResource!
+  createReportForm(input: CreateReportFormInput!): CreateReportFormPayload!
+  createReportFormEnrollment(input: CreateReportFormEnrollmentInput!): CreateReportFormEnrollmentPayload!
   createSlice(input: CreateSliceInput!): CreateSlicePayload!
   createSurvey(input: CreateSurveyInput!): CreateSurveyPayload!
+  publishRecurringSurvey(input: PublishRecurringSurveyInput!): PublishRecurringSurveyPayload!
+  publishReportForm(input: PublishReportFormInput!): PublishReportFormPayload!
   publishSlice(input: PublishSliceInput!): PublishSlicePayload!
   publishSurvey(input: PublishSurveyInput!): PublishSurveyPayload!
   removeParticipants(ids: [ID!]!): RemoveParticipantsPayload
   submitEnrollmentAnswers(input: SubmitEnrollmentAnswersInput!): SubmitEnrollmentAnswersPayload!
+  submitEnrollmentTokenAnswers(input: SubmitEnrollmentTokenAnswersInput!): SubmitEnrollmentAnswersPayload!
+  submitReportFormEnrollmentAnswers(input: SubmitReportFormEnrollmentAnswersInput!): SubmitReportFormEnrollmentAnswersPayload!
   unpublishSlice(input: UnpublishSliceInput!): UnpublishSlicePayload!
   updateExternalParticipants(participants: [UpdateParticipantInput!]!): [Participant!]!
   updateParticipantGroupMemberFilter(input: UpdateParticipantGroupMemberFilterInput!): UpdateParticipantGroupMemberFilterPayload!
   updateParticipantGroupMembers(input: UpdateParticipantGroupMembersInput!): UpdateParticipantGroupMembersPayload!
   updateParticipantGroupMetadata(input: UpdateParticipantGroupMetadataInput!): UpdateParticipantGroupMetadataPayload!
+  updateRecurringSurveyDefinition(input: UpdateRecurringSurveyDefinitionInput!): UpdateRecurringSurveyDefinitionPayload!
+  updateRecurringSurveyDistribution(input: UpdateRecurringSurveyDistributionInput!): UpdateRecurringSurveyDistributionPayload!
+  updateRecurringSurveyMetadata(input: UpdateRecurringSurveyMetadataInput!): UpdateRecurringSurveyMetadataPayload!
   updateRemoteResource(input: UpdateRemoteResourceInput!): UpdateRemoteResourcePayload!
+  updateReportFormDefinition(input: UpdateReportFormDefinitionInput!): UpdateReportFormDefinitionPayload!
+  updateReportFormMetadata(input: UpdateReportFormMetadataInput!): UpdateReportFormMetadataPayload!
   updateSliceDefinition(input: UpdateSliceDefinitionInput!): UpdateSliceDefinitionPayload!
   updateSliceMetadata(input: UpdateSliceMetadataInput!): UpdateSliceMetadataPayload!
   updateSurveyDefinition(input: UpdateSurveyDefinitionInput!): UpdateSurveyDefinitionPayload!
@@ -233,6 +294,16 @@ type ParticipantsPage {
   participants: [Participant!]!
 }
 
+type PublishRecurringSurveyPayload {
+  recurringSurvey: RecurringSurvey
+  userErrors: [UserError!]!
+}
+
+type PublishReportFormPayload {
+  reportForm: ReportForm
+  userErrors: [UserError!]!
+}
+
 type PublishSlicePayload {
   slice: Slice
   userErrors: [UserError!]!
@@ -245,6 +316,7 @@ type PublishSurveyPayload {
 
 type Query {
   enrollmentById(id: ID!): Enrollment
+  enrollmentByToken: Enrollment
   enrollmentsPage(filter: EnrollmentFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): EnrollmentsPage!
   fetchRemoteResourceData(id: ID!): RemoteResourceData!
   me: User!
@@ -255,10 +327,16 @@ type Query {
   participantsPage(filter: ParticipantFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage
   participantsPageGeneric(filter: FilterSchema, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage
   recurringSurveyById(id: ID!): RecurringSurvey
+  recurringSurveysPage(filter: RecurringSurveyFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): RecurringSurveysPage!
   remoteResourceById(id: ID!): RemoteResource!
   remoteResources(after: String, filter: RemoteResourceFilter, first: Int!): RemoteResourceConnection!
   remoteResourcesPage(filter: RemoteResourceFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): RemoteResourcesPage
+  reportFormById(id: ID!): ReportForm
+  reportFormEnrollmentById(id: ID!): ReportFormEnrollment
+  reportFormEnrollmentsPage(filter: ReportFormEnrollmentFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ReportFormEnrollmentsPage!
+  reportFormsPage(filter: ReportFormFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ReportFormsPage!
   sliceById(id: ID!): Slice
+  sliceEditions(after: String, filter: SliceEditionFilter, first: Int!): SliceEditionConnection!
   sliceHistoryPage(filter: SliceHistoryFilter, id: ID!, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SliceHistoryPage!
   slicesPage(filter: SliceFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): SlicesPage!
   surveyById(id: ID!): Survey
@@ -272,15 +350,58 @@ type Question {
   title: String!
 }
 
+type RadiogroupAnswer {
+  choice: String!
+}
+
+type RadiogroupResponse {
+  answer: RadiogroupAnswer!
+  order: Int!
+  question: Question!
+}
+
 type RecurringSurvey implements Node {
   created: DateTime!
   createdBy: User!
   definition: DefinitionSchema
   description: String
   id: ID!
-  participants: [Participant]!
+  occurrenceDurationNumber: Int
+  occurrenceDurationUnit: OccurrenceDurationUnit
+  occurrencesPage(offsetAndLimit: OffsetAndLimit): RecurringSurveyOccurrencesPage!
+  participantGroups: [ParticipantGroup!]!
+  participants: [Participant!]!
+  recurrenceRule: String
+  state: RecurringSurveyState!
   title: String!
   version: Int!
+}
+
+type RecurringSurveyOccurrence {
+  due: DateTime!
+  future: Boolean!
+  number: Int!
+  occurrenceId: String!
+  started: DateTime!
+}
+
+type RecurringSurveyOccurrencesPage {
+  occurrences: [RecurringSurveyOccurrence!]!
+  pagination: Pagination!
+}
+
+type RecurringSurveySnapshot implements Node {
+  created: DateTime!
+  createdBy: User!
+  description: String
+  id: ID!
+  state: RecurringSurveyState!
+  title: String!
+}
+
+type RecurringSurveysPage {
+  pagination: Pagination!
+  recurringSurveys: [RecurringSurveySnapshot!]!
 }
 
 type RemoteResource {
@@ -317,8 +438,62 @@ type RemoveParticipantsPayload {
   participants: [Participant!]!
 }
 
+type ReportForm implements Node {
+  created: DateTime!
+  createdBy: User!
+  definition: DefinitionSchema
+  description: String
+  id: ID!
+  state: ReportFormState!
+  title: String!
+  version: Int!
+}
+
+type ReportFormEnrollment implements Node {
+  answers: AnswersSchema
+  completed: DateTime
+  completionState: EnrollmentCompletionState!
+  created: DateTime!
+  definition: DefinitionSchema!
+  description: String
+  id: ID!
+  surveyType: SurveyType!
+  title: String!
+  version: Int!
+}
+
+type ReportFormEnrollmentSnapshot implements Node {
+  completed: DateTime
+  completionState: EnrollmentCompletionState!
+  created: DateTime
+  createdBy: User!
+  id: ID!
+}
+
+type ReportFormEnrollmentsPage {
+  pagination: Pagination!
+  reportFormEnrollments: [ReportFormEnrollmentSnapshot!]!
+}
+
+type ReportFormSnapshot implements Node {
+  created: DateTime!
+  createdBy: User!
+  description: String
+  id: ID!
+  state: ReportFormState!
+  title: String!
+}
+
+type ReportFormsPage {
+  pagination: Pagination!
+  reportForms: [ReportFormSnapshot!]!
+}
+
 type Responses {
+  checkbox: [CheckboxResponse!]!
+  dropdown: [DropdownResponse!]!
   file: [FileResponse!]!
+  radiogroup: [RadiogroupResponse!]!
   text: [TextResponse!]!
 }
 
@@ -328,7 +503,7 @@ type Slice implements Node {
   definition: DefinitionSchema
   description: String
   id: ID!
-  isPublished: Boolean!
+  state: SliceState!
   title: String!
   version: Int!
 }
@@ -353,6 +528,29 @@ type SliceChangeDescriptionJson implements SliceChangeDescription {
   title: String!
 }
 
+type SliceEdition implements Node {
+  created: DateTime!
+  createdBy: User!
+  definition: DefinitionSchema
+  description: String
+  id: ID!
+  isActive: Boolean
+  state: SliceState!
+  surveys: [Survey]
+  title: String!
+  version: Int
+}
+
+type SliceEditionConnection {
+  edges: [SliceEditionEdge]
+  pageInfo: PageInfo
+}
+
+type SliceEditionEdge {
+  cursor: String
+  node: SliceEdition
+}
+
 type SliceHistoryPage {
   changes: [SliceChange!]!
   pagination: Pagination!
@@ -364,7 +562,7 @@ type SliceSnapshot implements Node {
   definition: DefinitionSchema
   description: String
   id: ID!
-  isPublished: Boolean
+  state: SliceState!
   title: String!
   version: Int
 }
@@ -376,6 +574,11 @@ type SlicesPage {
 
 type SubmitEnrollmentAnswersPayload {
   enrollment: Enrollment
+  userErrors: [UserError!]!
+}
+
+type SubmitReportFormEnrollmentAnswersPayload {
+  reportFormEnrollment: ReportFormEnrollment
   userErrors: [UserError!]!
 }
 
@@ -462,8 +665,33 @@ type UpdateParticipantGroupMetadataPayload {
   userErrors: [UserError!]!
 }
 
+type UpdateRecurringSurveyDefinitionPayload {
+  recurringSurvey: RecurringSurvey
+  userErrors: [UserError!]!
+}
+
+type UpdateRecurringSurveyDistributionPayload {
+  recurringSurvey: RecurringSurvey
+  userErrors: [UserError!]!
+}
+
+type UpdateRecurringSurveyMetadataPayload {
+  recurringSurvey: RecurringSurvey
+  userErrors: [UserError!]!
+}
+
 type UpdateRemoteResourcePayload {
   remoteResource: RemoteResource
+  userErrors: [UserError!]!
+}
+
+type UpdateReportFormDefinitionPayload {
+  reportForm: ReportForm
+  userErrors: [UserError!]!
+}
+
+type UpdateReportFormMetadataPayload {
+  reportForm: ReportForm
   userErrors: [UserError!]!
 }
 
@@ -520,6 +748,13 @@ enum EnrollmentCompletionState {
   NEW
 }
 
+enum OccurrenceDurationUnit {
+  DAY
+  MONTH
+  WEEK
+  YEAR
+}
+
 enum OrderByDirection {
   ASC
   DESC
@@ -535,11 +770,32 @@ enum ParticipantType {
   INTERNAL
 }
 
+enum RecurringSurveyState {
+  CANCELED
+  DELETED
+  PUBLISHED
+  UNPUBLISHED
+}
+
+enum ReportFormState {
+  CANCELED
+  DELETED
+  PUBLISHED
+  UNPUBLISHED
+}
+
 enum SliceChangeType {
   DEFINITION
   METADATA
   PUBLISH
   UNPUBLISH
+}
+
+enum SliceState {
+  CANCELED
+  DELETED
+  PUBLISHED
+  UNPUBLISHED
 }
 
 enum SurveyChangeType {
@@ -569,10 +825,20 @@ enum UserErrorCode {
   DEFINITION_SLICE_CONTAINS_PAGES
   DEFINITION_SLICE_INVALID_JSON
   DEFINITION_SLICE_TOO_MANY_PAGES
+  ENROLLMENT_ANSWERING_CANCELED
+  ENROLLMENT_CANCELED
+  ENROLLMENT_NO_REQUIRED_QUESTION_ON_COMPLETE
   FORM_METADATA_ALREADY_CONNECTED_TO_DEFINITION
   FORM_METADATA_NOT_EXISTS
   PARTICIPANT_GROUP_INVALID_TYPE_ON_MEMBERS_UPDATE
   PARTICIPANT_GROUP_INVALID_TYPE_ON_MEMBER_FILTER_UPDATE
+  RECURRING_SURVEY_NOT_UNPUBLISHED
+  RECURRING_SURVEY_NO_DEFINITION_ON_PUBLISH
+  RECURRING_SURVEY_NO_RULE_ON_PUBLISH
+  REPORT_FORM_INVALID_STATE_ON_CANCEL
+  REPORT_FORM_INVALID_STATE_ON_PUBLISH
+  REPORT_FORM_INVALID_STATE_ON_UPDATE
+  REPORT_FORM_NO_DEFINITION_ON_PUBLISH
   SLICE_ALREADY_PUBLISHED
   SLICE_NOT_PUBLISHED
   SURVEY_END_DATE_BEFORE
@@ -599,7 +865,27 @@ scalar FilterSchema
 "A JSON scalar"
 scalar JSON
 
+input CancelRecurringSurveyInput {
+  id: ID!
+  version: Int!
+}
+
+input CancelReportFormInput {
+  id: ID!
+  version: Int!
+}
+
 input CompleteEnrollmentInput {
+  answers: JSON!
+  id: ID!
+  version: Int!
+}
+
+input CompleteEnrollmentTokenInput {
+  answers: JSON!
+}
+
+input CompleteReportFormEnrollmentInput {
   answers: JSON!
   id: ID!
   version: Int!
@@ -627,6 +913,16 @@ input CreateRemoteResourceInput {
   password: String!
   url: String!
   username: String!
+}
+
+input CreateReportFormEnrollmentInput {
+  answers: JSON!
+  reportFormId: ID!
+}
+
+input CreateReportFormInput {
+  description: String
+  title: String!
 }
 
 input CreateSliceInput {
@@ -685,6 +981,16 @@ input ParticipantGroupFilter {
   types: [ParticipantGroupType]
 }
 
+input PublishRecurringSurveyInput {
+  id: ID!
+  version: Int!
+}
+
+input PublishReportFormInput {
+  id: ID!
+  version: Int!
+}
+
 input PublishSliceInput {
   id: ID!
   version: Int!
@@ -695,16 +1001,45 @@ input PublishSurveyInput {
   version: Int!
 }
 
+input RecurringSurveyFilter {
+  createdBetween: DateRange
+  createdByIds: [String]
+  descriptions: [String]
+  states: [RecurringSurveyState]
+  titles: [String]
+}
+
 input RemoteResourceFilter {
   createdBetween: DateRange
   names: [String]
+}
+
+input ReportFormEnrollmentFilter {
+  completionStates: [EnrollmentCompletionState]
+  createdBetween: DateRange
+  reportFormIds: [String]
+  self: Boolean
+}
+
+input ReportFormFilter {
+  createdBetween: DateRange
+  createdByIds: [String]
+  descriptions: [String]
+  states: [ReportFormState]
+  titles: [String]
+}
+
+input SliceEditionFilter {
+  createdBetween: DateRange
+  isActive: Boolean
+  sliceIds: [String]
 }
 
 input SliceFilter {
   createdBetween: DateRange
   createdByIds: [String]
   descriptions: [String]
-  published: Boolean
+  states: [SliceState]
   titles: [String]
 }
 
@@ -720,10 +1055,21 @@ input SubmitEnrollmentAnswersInput {
   version: Int!
 }
 
+input SubmitEnrollmentTokenAnswersInput {
+  answers: JSON!
+}
+
+input SubmitReportFormEnrollmentAnswersInput {
+  answers: JSON!
+  id: ID!
+  version: Int!
+}
+
 input SurveyFilter {
   createdBetween: DateRange
   createdByIds: [String]
   descriptions: [String]
+  states: [SurveyState]
   titles: [String]
 }
 
@@ -764,12 +1110,48 @@ input UpdateParticipantInput {
   lastName: String!
 }
 
+input UpdateRecurringSurveyDefinitionInput {
+  definition: JSON!
+  id: ID!
+  version: Int!
+}
+
+input UpdateRecurringSurveyDistributionInput {
+  id: ID!
+  occurrenceDurationNumber: Int
+  occurrenceDurationUnit: OccurrenceDurationUnit
+  participantGroupIds: [IdAndVersion!]
+  participantIds: [String!]
+  recurrenceRule: String!
+  version: Int!
+}
+
+input UpdateRecurringSurveyMetadataInput {
+  description: String
+  id: ID!
+  title: String!
+  version: Int!
+}
+
 input UpdateRemoteResourceInput {
   id: String!
   name: String!
   password: String!
   url: String!
   username: String!
+}
+
+input UpdateReportFormDefinitionInput {
+  definition: JSON!
+  id: ID!
+  version: Int!
+}
+
+input UpdateReportFormMetadataInput {
+  description: String
+  id: ID!
+  title: String!
+  version: Int!
 }
 
 input UpdateSliceDefinitionInput {
