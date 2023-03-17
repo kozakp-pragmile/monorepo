@@ -1,0 +1,7 @@
+POST http://localhost:8085/kestrel/api/graphql
+Authorization: Basic bmp secret
+Content-Type: application/json
+
+{
+  "query": "query EnrollmentsPage($filter: EnrollmentFilter, $orderBy: OrderBy, $offsetAndLimit: OffsetAndLimit) { enrollmentsPage(filter: $filter, orderBy: $orderBy, offsetAndLimit: $offsetAndLimit) { pagination { totalCount } enrollments { id title surveyType started due completionState completed participant { firstName lastName } responses { text { question { title name } answer { text } } } } }}"
+}

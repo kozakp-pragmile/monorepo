@@ -326,6 +326,7 @@ type Query {
   participants(after: String, filter: ParticipantFilter, first: Int!): ParticipantConnection!
   participantsPage(filter: ParticipantFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage
   participantsPageGeneric(filter: FilterSchema, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): ParticipantsPage
+  pendingReportFormEnrollmentByReportForm(reportFormId: ID!): ReportFormEnrollment
   recurringSurveyById(id: ID!): RecurringSurvey
   recurringSurveysPage(filter: RecurringSurveyFilter, offsetAndLimit: OffsetAndLimit, orderBy: OrderBy): RecurringSurveysPage!
   remoteResourceById(id: ID!): RemoteResource!
@@ -454,6 +455,7 @@ type ReportFormEnrollment implements Node {
   completed: DateTime
   completionState: EnrollmentCompletionState!
   created: DateTime!
+  createdBy: User
   definition: DefinitionSchema!
   description: String
   id: ID!
@@ -468,6 +470,7 @@ type ReportFormEnrollmentSnapshot implements Node {
   created: DateTime
   createdBy: User!
   id: ID!
+  responses: Responses!
 }
 
 type ReportFormEnrollmentsPage {

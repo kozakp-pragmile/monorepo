@@ -1,10 +1,64 @@
-query Report {
-  reportFormEnrollmentsPage {
-    reportFormEnrollments {
-      id
-    }
+query Report($filter: ReportFormEnrollmentFilter, $orderBy: OrderBy, $offsetAndLimit: OffsetAndLimit) {
+  reportFormEnrollmentsPage(filter: $filter, orderBy: $orderBy, offsetAndLimit: $offsetAndLimit) {
     pagination {
       totalCount
+    }
+    reportFormEnrollments {
+      id
+      completionState
+      completed
+      createdBy {
+        displayName
+      }
+      responses {
+        text {
+          question {
+            title
+            name
+          }
+          answer {
+            text
+          }
+        }
+        file {
+          question {
+            title
+            name
+          }
+          answer {
+            name
+            type
+            content
+          }
+        }
+        checkbox {
+          question {
+            title
+            name
+          }
+          answer {
+            choices
+          }
+        }
+        radiogroup {
+          question {
+            title
+            name
+          }
+          answer {
+            choice
+          }
+        }
+        dropdown {
+          question {
+            title
+            name
+          }
+          answer {
+            choice
+          }
+        }
+      }
     }
   }
 }
