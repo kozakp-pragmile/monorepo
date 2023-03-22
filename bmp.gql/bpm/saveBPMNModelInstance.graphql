@@ -1,0 +1,11 @@
+mutation SaveBPMNModelInstance($model: bpmnModelInput) {
+  saveBpmnView(model: $model) {
+    bpmnModel {
+      connections {
+        id
+      }
+    }
+    message
+    status
+  }
+}

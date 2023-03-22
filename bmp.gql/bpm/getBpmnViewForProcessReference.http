@@ -1,0 +1,7 @@
+POST http://localhost:8080/CorpoWebserver/graphql
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJjbGkiOiI0NTY3Iiwic3ViIjoiand0LWV4YW1wbGUiLCJhdWQiOiI0NTY3IiwibG4iOiJFeGFtcGxlIiwiZm4iOiJKV1QiLCJmaW5nZXJQcmludEhhc2giOiI3MDI0OTE0Y2MyNTFjZmU2OTZmOWYwZDg3NTdhNzA3ZTlhZDc3NTIzYmYzMDY5ZWRiODQ5N2M1NTFjMzUyNThhIiwiZ3IiOlsiRXZlcnlvbmUiXSwiZXhwIjoyMzc1MjIyNTM0LCJpYXQiOjE2NTUyMjI1MzQsImVtYWlsIjoiand0LWV4YW1wbGVAZXhhbXBsZS5jb20ifQ.Dox5PkcLaUuU3UYsj5vmNzt9czCVPfz4ptHaE_Z7pA4DvvZWyv0UPOBP9q9k2UCHZLR79Nqbw87o_b4MWweHAqNlXcuPQx36KIIwHn_K2ZH7Lw9vBGsGP5idEMo8OzPP5Fdx80v0jNyxVvqhVXpElmmIN5xY4mVfC-xkoM2HzGxt_QOD4vV98LajrM3Pu7bDyFFaKIaPWGBDMpfVSxK3mQpVD3IJmu7lLtOolc3o_ykkSLnXlUM_NJSHnuDxaMe7IMjYB5m5k-GZEat85YSXhpgXKI_-r4-Wv8OJMOtSM3lToW50SP1Amub313QHhrLF-0IojlGqU7dWeJdVWSkULQ
+Content-Type: application/json
+
+{
+  "query": "query { bpmnViewForProcessReference(bpmnViewRid: \"3651453130030950748\") { altText bpmnXml bpmnModelName bpmnModel { connections { id sourceId targetId name nameBounds { x y width height } type conditionExpression waypoints { x y } } shapes { id name bounds { x y width height } type ... on bpmnUserTask { pageId } } } height displayProcessRoles processRoles { userTaskDefinitionId name } taskLinks { taskDefinitionId rid } isEditDisabled }}"
+}

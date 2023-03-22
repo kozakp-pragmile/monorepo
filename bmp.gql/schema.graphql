@@ -1,0 +1,1829 @@
+schema {
+  query: QueryType
+  mutation: MutationType
+}
+
+"Marks the field, argument, input field or enum value as deprecated"
+directive @deprecated(
+    "The reason for the deprecation"
+    reason: String = "No longer supported"
+  ) on FIELD_DEFINITION | ARGUMENT_DEFINITION | ENUM_VALUE | INPUT_FIELD_DEFINITION
+
+"Directs the executor to include this field or fragment only when the `if` argument is true"
+directive @include(
+    "Included when true."
+    if: Boolean!
+  ) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"Directs the executor to skip this field or fragment when the `if` argument is true."
+directive @skip(
+    "Skipped when true."
+    if: Boolean!
+  ) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"Exposes a URL that specifies the behaviour of this scalar."
+directive @specifiedBy(
+    "The URL that specifies the behaviour of this scalar."
+    url: String!
+  ) on SCALAR
+
+interface bpmnShape {
+  bounds: bpmnBounds
+  childIds: [String]
+  id: String
+  name: String
+  parentId: String
+  type: String
+}
+
+union topBarInfo = NoWebParentError | TopBarInfo
+
+type AuthorizationCode {
+  code: String
+}
+
+type Children {
+  orgs: [EpmObject]
+  parentRid: String
+  self: EpmObject
+}
+
+type CorrelatedObject {
+  name: String
+  rid: String
+}
+
+type Correlation {
+  affectedObject: CorrelatedObject
+  affectingObject: CorrelatedObject
+  value: Float
+}
+
+type CorrelationMatrix {
+  correlations: [Correlation]
+  displayItemSelector: Boolean
+  excludeItemsWithoutLinkedRisks: Boolean
+  linkedRisksProperty: String
+  rid: String
+}
+
+type EpmObject {
+  hasChildren: String
+  icon: String
+  iconSupported: Boolean
+  lifetimeEnd: Long
+  lifetimeStart: Long
+  lock: lock
+  name: String
+  rid: String
+  tabRid: String
+  timespanEnd: Long
+  timespanStart: Long
+  type: String
+  webParentName: String
+  webParentRid: String
+}
+
+type FormPayloadResponse {
+  key: String
+  name: String
+}
+
+type MutationType {
+  addChild(contextObjectRid: String, parentRid: String, properties: [String], sourceRid: String, type: String, values: [String]): reference
+  addComment(commentListRid: String, commentText: String, isRichText: Boolean, userRid: String): comment
+  addFavourite(rid: String): favorites
+  assignUserTaskInstance(userRid: String, userTaskInstanceId: String): taskAssigned
+  completeUserTask(userTaskInstanceId: String, userTaskPageRid: String, variables: [variable]): taskCompleted
+  createDatasetTableView(configuration: String, contextObjectRid: String, parentRid: String, properties: [String], sourceRid: String, type: String, values: [String]): reference
+  deleteNotifications(ids: [String]): deleteNotificationsResult
+  deleteObject(rid: String): reference
+  executeInputActions(actions: [String], rid: String): operationResult
+  executeInputValidations(rid: String, validations: [String]): inputValidationResults
+  processControl(operation: String, processApplicableRid: String, processInstanceId: String, processRid: String, tabRid: String, variables: [variable], webParentRid: String): processControl
+  removeComment(rid: String): operationResult
+  removeFavourite(rid: String): favorites
+  reorderRows(movedRowRid: String, rowInTargetPositionRid: String, shouldMoveAfterItemInTargetPosition: Boolean, tableRid: String): reorderRows
+  resetProcessIncident(dataId: String): String
+  runSimulation(rid: String, selectedRids: [String]): operationResult
+  saveBpmnView(deploymentName: String, model: bpmnModelInput): saveBpmnView
+  saveCorrelationMatrix(correlations: [CorrelationInput], rid: String): operationResult
+  saveInputViewInputs(inputs: [InputViewInput], rid: String): operationResult
+  saveSelections(rid: String, selectedProperties: [String], selectedRids: [String]): reference
+  submitForm(data: String, dataId: String, rejectMsg: String, submitType: submitType): submitFormResult
+  updateComment(commentListRid: String, commentText: String, rid: String): comment
+  updateDatasetTableViewConfig(configuration: String, viewRid: String): reference
+  updateNodes(nodeData: [String], tableRid: String): updatedNodes
+  updateObjectBulk(editorLocation: String, properties: [String], rid: String, values: [String], widgetRid: String): updatedObject
+}
+
+type NoWebParentError {
+  message: String
+}
+
+type QueryType {
+  actionButton(rid: String): actionButton
+  actionButtonInvocation(contextObjectRid: String, rid: String): actionButtonInvocation
+  actionProgress(id: String, rid: String): actionProgress
+  activeFeatures: activeFeatures
+  addButtonInput(rid: String): addButtonInput
+  allYears: [period]
+  approvalObjectApprove(comment: String, objectRid: String, userRid: String): approvalObjectApproveResult
+  approvalObjectReject(comment: String, objectRid: String, userRid: String): approvalObjectRejectResult
+  auditInfoView(auditRid: String): auditInfoView
+  auditTable(auditRid: String, rid: String): table
+  authorizationCode: AuthorizationCode
+  bpmnProcess(processRid: String, rid: String): bpmnProcess
+  bpmnViewForProcessReference(bpmnViewRid: String): bpmnView
+  bpmnViewOnUserTaskPage(bpmnViewRid: String, userTaskInstanceId: String): bpmnViewOnUserTaskPage
+  breadcrumbs(rid: String): [EpmObject]
+  businessObjectSpecifiedContext(rid: String): businessObjectSpecifiedContext
+  buttonContainerLayout(rid: String): flexboxLayoutObject
+  buttonGroup(inputViewRid: String, rid: String): buttonGroup
+  buttonInput(inputViewRid: String, rid: String): buttonInput
+  canRunSimulation(rid: String): canRunSimulation
+  cancelReport(uniqueReportName: String): cancelReport
+  cardsByProcessLandscapeViewQuery(processLandscapeViewRid: ID): processLandscapeView
+  cardsByTableRid(selectedPeriod: Long, selectedPeriodType: String, tableRid: ID): cardTree
+  chart(rid: String, selectedPeriodMillis: Long, selectedPeriodType: String, selectedWebParentRid: String, selectedYtd: Boolean): chart
+  child(id: String): webchildInfo
+  children(selectedPeriodMillis: Long, selectedPeriodType: String, tabRid: String, webParentRid: String): [webchildInfo]
+  comments(paginationPageNumberStartingFromZero: Int, paginationPageSize: Int, rid: String, selectedPeriodMillis: Long, selectedPeriodType: String): commentList
+  containerChildren(rid: String): [webchildInfo]
+  containerLayout(rid: String): layoutObject
+  continuousFormOrganisations(formId: String, periodTimestamp: Long, periodType: String): Children
+  correlationItemsWithLinkedRisks(correlationMatrixRid: String, selectionTableRid: String): correlationItemsWithLinkedRisks
+  correlationMatrix(rid: String): CorrelationMatrix
+  createObjectEditorSchema(INJECTED_MILLIS: Long, INJECTED_PERIODTYPE: String, createObjectViewRid: String): descriptionViewEditorSchema
+  createObjectView(periodTimestamp: Long, periodType: String, rid: String): descriptionWidget
+  creator(contextObjectRid: String, initializerRid: String, parentRid: String, tabRid: String, templateRid: String, type: String): objectProperties
+  currentTheme: currentTheme
+  customVisualization(rid: String): customVisualization
+  datasetTableChart(configuration: String, datasetTableRid: String, rid: String, selectedPeriodMillis: Long, selectedPeriodType: String, selectedWebParentRid: String, viewRid: String): chart
+  datasetTableConfig(rid: String): datasetTableConfig
+  datasetTableView(configuration: String, datasetTableRid: String, selectedPeriod: Long, selectedPeriodType: String, viewRid: String): table
+  datasetTableViewConfig(viewRid: String): datasetTableViewConfig
+  datasetTableViews(rid: String): views
+  description(periodTimestamp: Long, periodType: String, rid: String, webParentRid: String, ytd: Boolean): descriptionWidget
+  descriptionEditorSchema(descriptionViewRid: String, descriptionViewVisiblePropertiesNames: [String], periodTimestamp: Long, periodType: String, webParentRid: String, ytd: Boolean): descriptionViewEditorSchema
+  descriptionRealObject(descriptionViewRid: String): reference
+  drill(fmc: String, periodTimestamp: Long, periodType: String, rid: String): drillsInfo
+  drillDetailDataForDrillKey(drillKeyAsBase64: String, drillRid: String, fmcRid: String, periodTimestamp: Long, periodType: String, rid: String): drillRowsContent
+  drillExternalSourceData(columnRid: String, detailDrillKeyAsBase64: String, mainDrillKeyAsBase64: String, rid: String, valueUrl: String): drillExternalSourceData
+  drillRowsData(drillRid: String, fmcRid: String, periodTimestamp: Long, periodType: String, rid: String): drillRowsContent
+  enrollment(rid: String): enrollment
+  epmObject(rid: String): EpmObject
+  executeInputButtonAction(itemRid: String, rid: String): executeInputButtonAction
+  extendedExpressionsQuery: extendedExpressions
+  favorites(rid: String): favorites
+  filteredCommentsPageable(paginationPageNumberStartingFromZero: Int, paginationPageSize: Int, rid: String, selectedPeriodMillis: String, selectedPeriodType: String): filteredCommentsPageable
+  form(dataId: String, formId: String, orgId: String): form
+  generateReport(fileType: String, rid: String): generateReport
+  generateReportProgress(uniqueReportName: String): generateReportProgress
+  getPagesRoot: pagesRoot
+  getTransformerJobDescription(transformerJobRid: String): transformerDescription
+  globalConfig: globalConfig
+  happyPathViewForProcessReference(happyPathViewRid: String): happyPathView
+  happyPathViewOnUserTaskPage(happyPathViewRid: String, userTaskInstanceId: String): happyPathView
+  homeOrg: homeOrg
+  image(rid: String, selectedPeriodMillis: Long, selectedPeriodType: String): image
+  inputView(rid: String): inputView
+  integrationPowerBiConfig(rid: String, selectedPeriodMillis: Long, selectedPeriodType: String): integrationPowerBiConfig
+  layout(tabRid: String, webParentRid: String): layoutObject
+  linkMap(rid: String, selectedPeriodMillis: Long, selectedPeriodType: String, selectedWebParentRid: String, selectedYtd: Boolean): linkMap
+  mainMenuInfo(rid: String): mainMenuInfo
+  microFrontends: [microFrontend]
+  nextUserTasks(userTaskInstanceId: String): nextUserTasks
+  notificationTable(rid: String): notificationList
+  notifications: notifications
+  numberInputFormattedValue(inputRid: String, inputViewRid: String): numberInput
+  objectCardQuery(rid: ID, selectedPeriod: Long, selectedPeriodType: String): card
+  objectMap(rid: String, surpress: [String]): objectProperties
+  objectName(rid: String): EpmObject
+  objectToDeleteChildren(rid: String): [objectToDeleteInfo]
+  objectToDeleteRootInfo(rid: String): objectToDeleteInfo
+  organisations(periodTimestamp: Long, periodType: String, rid: String, selectedWebParentId: String): Children
+  pageInTopbar(rid: String): pageInTopbar
+  pageLocationInfo(rid: String): pageLocationInfo
+  periodStringToMillis(periodString: String): result
+  periods(selectedPeriodMillis: Long, selectedPeriodType: String, webParentRid: String): periodInfomation
+  periodsInYear(periodMillis: Long, periodType: String): [period]
+  quickSearch(pageNumber: Int, pageSize: Int, text: String): quickSearchResults
+  realObjectForCreateObject(createObjectViewRid: String): realObjectForCreateObjectView
+  referenceInputInitialTreeData(rid: String): referencePropertyEditorInitialTreeData
+  referenceInputList(pageNumberStartingFromZero: Int, pageSize: Int, rid: String, searchText: String): inlineSearchResultItems
+  referenceInputTreeData(inputRid: String, treeNodeRid: String): referencePropertyEditorTreeData
+  referencePropertyEditorInitialTreeData(creationParentRid: String, creationTabRid: String, creationTemplateRid: String, creationType: String, editMode: String, editionObjectRid: String, referencePropertyName: String): referencePropertyEditorInitialTreeData
+  referencePropertyEditorTreeData(creationParentRid: String, creationTabRid: String, creationTemplateRid: String, creationType: String, editMode: String, editionObjectRid: String, referencePropertyName: String, treeNodeRid: String): referencePropertyEditorTreeData
+  referencePropertyListEditor(creationParentRid: String, creationTabRid: String, creationTemplateRid: String, creationType: String, editMode: String, editionObjectRid: String, pageNumberStartingFromZero: Int, pageSize: Int, referencePropertyName: String, searchText: String): inlineSearchResultItems
+  relatedCommentsPageable(commentListRid: String, optionalFilterText: String, optionalSortingDescending: Boolean, optionalSortingField: String, optionalSortingNullsFirst: Boolean, paginationPageNumberStartingFromZero: Int, paginationPageSize: Int): relatedCommentsPageable
+  rootOrganisations(periodTimestamp: Long, periodType: String, selectedWebParentId: String): rootOrgs
+  searchBox(rid: String): searchBox
+  searchBoxResults(pageNumberFromZero: Int, pageSize: Int, rid: String, selectedPeriodMillis: Long, selectedPeriodType: String, selectedWebParentRid: String, text: String): searchBoxResults
+  selectionTableRid(contextObjectRid: String, parentRid: String, properties: [String], sourceRid: String, type: String, values: [String], webParentRid: String): selectionTableRid
+  selections(contextObjectRid: String, parentRid: String, properties: [String], sourceRid: String, type: String, values: [String], webParentRid: String): [selection]
+  sendReport(fileType: String, rid: String): sendReport
+  shortcutList(rid: String): shortcutList
+  siblings(rid: String, selectedPeriodMillis: Long, selectedPeriodType: String): siblinglist
+  singleSourceTransformerJobExecutionStart(originalUploadedFileName: String, tempDirNameForUploadedFile: String, tempUploadedFileName: String, transformerJobRid: String, uploadedFileContentType: String): singleSourceTransformerJobExecutionStartResult
+  svgStatusIcon(imageCode: String, rid: String, rtl: Boolean, selectedPeriodMillis: String, selectedPeriodType: String, selectedYtd: Boolean, type: String, value: Float): svgStatusIcon
+  table(periodTimestamp: Long, periodType: String, rid: String, selectedRows: [String]): table
+  tableRow(hierarchyPath: String, periodTimestamp: Long, periodType: String, rid: String, rowRid: String): table
+  tableRowMenu(rid: String): tableRowMenu
+  tabs(rid: String, screenSize: String, selectedTabRid: String): tabs
+  textElement(rid: String, selectedPeriodMillis: Long, selectedPeriodType: String, selectedYtd: Boolean): textElement
+  topbarInfo(rid: String, screenSize: String, selectedPeriodMillis: Long, selectedPeriodType: String): topBarInfo
+  transformerJobExecutionProgress(processId: String): transformerJobExecutionProgress
+  transformerJobExecutionStop(transformerJobRid: String): transformerJobExecutionStop
+  transformerUndoPreviousImport(previousImportRid: String, transformerJobRid: String): transformerUndoPreviousImport
+  transformerWebSettings(transformerJobRid: String): transformerWebSettings
+  updatePassword(controlPassword: String, newPassword: String, oldPassword: String): passwordResult
+  urlView(rid: String, selectedPeriodMillis: Long, selectedPeriodType: String): urlView
+  user(userRid: String): user
+  userProfilePhoto: userProfilePhoto
+  userTask(processRid: String, selectedPeriodMillis: Long, selectedPeriodType: String, userTaskInstanceId: String, userTaskPageRid: String): userTask
+  userTaskAssignmentInfo(userTaskInstanceId: String): userTaskAssignmentInfo
+  userTaskVariablesInputWidget(userTaskInstanceId: String, userTaskPageRid: String): userTaskVariables
+  viewOverlays(viewRid: String): [bpmnViewOverlay]
+  webChildReference(processApplicableRid: String, rid: String, selectedPeriodMillis: Long, selectedPeriodType: String): webChildReference
+  webParentStatus(selectedPeriod: Long, selectedPeriodType: String, webParentRid: String, ytd: Boolean): status
+  webParents(rid: String): webParents
+  webTableViews(tableRid: String): webTableViews
+  workspaceTopLevelWebParents(webParentRid: String): workspaceTopLevelWebParents
+}
+
+type TopBarInfo {
+  "The two-letter language code for the current locale"
+  currentLocale: String
+  currentLogoRid: String
+  currentOrgName: String
+  currentOrgRid: String
+  currentPageRootName: String
+  currentPageRootRid: String
+  "The full name of the current logged in user"
+  currentUserName: String
+  currentUserRid: String
+  currentWebParent: topBarCurrentWebParent
+  currentWebParentPeriodName: String
+  currentWebParentPeriodType: String
+  currentWebParentPeriodTypeName: String
+  currentWebParentTime: Long
+  hasPeriodApplicable: Boolean
+  isPagePresent: Boolean
+  maxInactiveInterval: Long
+  pageLocationInfo: [EpmObject]
+  pageName: String
+  tabsVisible: Boolean
+  titleVisible: Boolean
+  todayInGlobalTimeSpan: Boolean
+  topBarConfig: String
+  topBarVisible: Boolean
+  ytdEnabled: Boolean
+}
+
+type WebParentsLifeTime {
+  endMillis: Long
+  rid: String
+  startMillis: Long
+}
+
+type WorkspaceClosureTableRow {
+  ancestor: String
+  depth: Int
+  descendant: String
+}
+
+type actionButton {
+  alignment: String
+  buttonStyle: buttonStyle
+  buttonText: String
+  jobRid: String
+  menuNodes: [nodeMenu]
+  shouldRefreshWhenClicked: Boolean
+  type: String
+}
+
+type actionButtonInvocation {
+  result: String
+}
+
+type actionProgress {
+  complete: Boolean
+  error: Boolean
+  queued: Boolean
+  running: Boolean
+  status: String
+}
+
+type activeFeatures {
+  features: [String]
+}
+
+type addButtonInput {
+  childType: String
+  goDirectlyToNewChild: Boolean
+  parentRid: String
+  sourceRid: String
+}
+
+type approvalObjectApproveResult {
+  success: Boolean
+}
+
+type approvalObjectRejectResult {
+  success: Boolean
+}
+
+type approvalStagePayload {
+  algorithm: String
+  approvalName: String
+  approvedUsers: String
+  nonApprovedUsers: String
+  status: String
+}
+
+type auditInfoView {
+  fields: [auditInfoViewItem]
+}
+
+type auditInfoViewItem {
+  name: String
+  propertyName: String
+  value: String
+}
+
+type availableUserTaskInstance {
+  name: String
+  processApplicableRid: String
+  processRid: String
+  userTaskDefinitionId: String
+  userTaskInstanceId: String
+  userTaskPageRid: String
+}
+
+type bpmnBounds {
+  height: Float
+  width: Float
+  x: Float
+  y: Float
+}
+
+type bpmnConnection {
+  conditionExpression: String
+  id: String
+  name: String
+  nameBounds: bpmnBounds
+  sourceId: String
+  targetId: String
+  type: String
+  waypoints: [bpmnWaypoint]
+}
+
+type bpmnEvent implements bpmnShape {
+  bounds: bpmnBounds
+  childIds: [String]
+  id: String
+  messageRef: String
+  name: String
+  parentId: String
+  type: String
+}
+
+type bpmnFormField {
+  id: String
+  name: String
+  required: Boolean
+  type: bpmnFormFieldType
+  values: [bpmnFormFieldValue]
+}
+
+type bpmnFormFieldValue {
+  id: String
+  name: String
+}
+
+type bpmnMessage {
+  id: String
+  name: String
+}
+
+type bpmnModel {
+  connections: [bpmnConnection]
+  messages: [bpmnMessage]
+  process: bpmnProcessDescription
+  shapes: [bpmnShape]
+}
+
+type bpmnParticipant implements bpmnShape {
+  bounds: bpmnBounds
+  childIds: [String]
+  id: String
+  name: String
+  parentId: String
+  process: bpmnProcessDescription
+  type: String
+}
+
+type bpmnProcess {
+  tasks: [bpmnProcessTask]
+}
+
+type bpmnProcessDescription {
+  id: String
+  name: String
+}
+
+type bpmnProcessTask {
+  rid: String
+  userTaskDefinitionId: String
+  userTaskInstanceId: String
+  userTaskPageRid: String
+}
+
+type bpmnReceiveTask implements bpmnShape {
+  bounds: bpmnBounds
+  childIds: [String]
+  id: String
+  messageRef: String
+  name: String
+  parentId: String
+  type: String
+}
+
+type bpmnServiceTask implements bpmnShape {
+  bounds: bpmnBounds
+  childIds: [String]
+  id: String
+  implementationTopic: String
+  messageRef: String
+  name: String
+  parentId: String
+  type: String
+}
+
+type bpmnShapeDefault implements bpmnShape {
+  bounds: bpmnBounds
+  childIds: [String]
+  id: String
+  name: String
+  parentId: String
+  type: String
+}
+
+type bpmnUserTask implements bpmnShape {
+  bounds: bpmnBounds
+  childIds: [String]
+  formFields: [bpmnFormField]
+  happyPath: String
+  id: String
+  name: String
+  pageId: String
+  parentId: String
+  roles: [String]
+  type: String
+}
+
+type bpmnView {
+  altText: String
+  bpmnModel: bpmnModel
+  bpmnModelName: String
+  bpmnXml: String
+  displayProcessRoles: Boolean
+  height: String
+  isEditDisabled: Boolean
+  processRoles: [processRole]
+  taskLinks: [taskLink]
+}
+
+type bpmnViewOnUserTaskPage {
+  altText: String
+  bpmnModel: bpmnModel
+  bpmnModelName: String
+  bpmnTaskStatusList: [bpmnViewTaskStatus]
+  bpmnXml: String
+  centerActiveTasks: Boolean
+  displayProcessRoles: Boolean
+  height: String
+  isEditDisabled: Boolean
+  processRoles: [processRole]
+  taskLinks: [taskLink]
+}
+
+type bpmnViewOverlay {
+  categoryColor: String
+  categoryName: String
+  onByDefault: Boolean
+  overlayColor: String
+  overlayName: String
+  taskDefinitionOverlays: [bpmnViewTaskDefinitionOverlay]
+}
+
+type bpmnViewTaskDefinitionOverlay {
+  count: Int
+  taskDefinitionId: String
+  taskDefinitionOverlayObjects: [bpmnViewTaskDefinitionOverlayObject]
+}
+
+type bpmnViewTaskDefinitionOverlayObject {
+  name: String
+  rid: String
+}
+
+type bpmnViewTaskStatus {
+  completed: Boolean
+  current: Boolean
+  userTaskInstanceId: String
+}
+
+type bpmnWaypoint {
+  x: Float
+  y: Float
+}
+
+type businessObjectSpecifiedContext {
+  specifiedContext: String
+}
+
+type buttonGroup {
+  buttons: [buttonInput]
+  menuText: String
+  type: String
+}
+
+type buttonInput {
+  availability: inputAvailability
+  buttonStyle: buttonStyle
+  disabled: Boolean
+  failureMessage: String
+  inputRid: String
+  label: String
+  successMessage: String
+  type: String
+}
+
+type buttonStyle {
+  backgroundColor: String
+  fontColor: String
+}
+
+type canRunSimulation {
+  userHasWriteAccess: Boolean
+  wasSimulationRun: Boolean
+}
+
+type cancelReport {
+  success: Boolean
+}
+
+type card {
+  color: String
+  parts: [cardPart]
+  rid: String
+}
+
+type cardBit {
+  bitType: String
+  color: String
+  isInternalUrl: String
+  linkUrl: String
+  size: String
+  text: String
+  url: String
+}
+
+type cardPart {
+  first: cardBit
+  layout: String
+  second: cardBit
+  show: String
+  width: String
+}
+
+type cardTree {
+  hasHierarchy: Boolean
+  height: Int
+  json: String
+}
+
+type cell {
+  cellAlignment: String
+  editable: Boolean
+  jsonValue: String
+  required: Boolean
+  urlInfo: urlInfo
+}
+
+type chart {
+  chartData: String
+  dependsOn: [String]
+  isAdvanced: Boolean
+  isAggregated: Boolean
+  name: String
+  tableRid: String
+  type: String
+}
+
+type columnDefinition {
+  cellHint: String
+  columnAlignment: String
+  name: String
+  propertyName: String
+  readOnly: Boolean
+  required: Boolean
+  separator: Boolean
+  type: String
+  visible: Boolean
+}
+
+type columnWidth {
+  columnName: String
+  growColumnMax: Int
+  growColumnMin: Int
+  policy: String
+  useDefaultGrowAlgorithm: Boolean
+  width: Float
+}
+
+type columnWidths {
+  columns: [columnWidth]
+  defaultColumnWidth: Float
+  defaultColumnWidthPolicy: String
+}
+
+type comment {
+  configuredProperties: [configuredProperty]
+  delete: Boolean
+  edit: Boolean
+  isRichText: Boolean
+  registrationDate: String
+  rid: String
+  sampleDate: String
+  text: String
+  user: String
+  userRid: String
+}
+
+"Interface for DataFetchers which use pagination"
+type commentList {
+  add: Boolean
+  comments: [comment]
+  minimumCommentHeight: Int
+  paginationCurrentPageStartingFromZero: Int
+  paginationHasMoreItems: Boolean
+  paginationPageSize: Int
+  paginationTotalNumberOfItems: Long
+  showProfileImage: Boolean
+  showRelatedComments: Boolean
+}
+
+"Interface for DataFetchers which use pagination"
+type configuredProperty {
+  paginationCurrentPageStartingFromZero: Int
+  paginationHasMoreItems: Boolean
+  paginationPageSize: Int
+  paginationTotalNumberOfItems: Long
+  propertyDisplayName: String
+  propertyName: String
+  propertyValue: String
+}
+
+type correlationItemsWithLinkedRisks {
+  correlationItems: [CorrelatedObject]
+}
+
+type currentTheme {
+  default: Boolean
+  tags: [themeTag]
+  themeDisplayName: String
+  themeName: String
+}
+
+type customVisualization {
+  bid: String
+  endTime: Long
+  html: String
+  javascript: String
+  padding: Boolean
+  yearToDate: Boolean
+}
+
+type datasetTableConfig {
+  canUserCreateViews: Boolean
+  datasetTableRid: String
+  filterMax: Int
+  filterPanelName: String
+  filterValidationMessage: String
+  hideFilter: Boolean
+  searchBased: Boolean
+  settingsPanelExpanded: Boolean
+  showSettings: Boolean
+  xAxisMax: Int
+  xAxisPanelName: String
+  xAxisValidationMessage: String
+  yAxisMax: Int
+  yAxisPanelName: String
+  yAxisValidationMessage: String
+}
+
+type datasetTableView {
+  name: String
+  rid: String
+}
+
+type datasetTableViewConfig {
+  canUserEditView: Boolean
+  filter: [datasetTableViewConfigItem]
+  viewRid: String
+  xAxis: [datasetTableViewConfigItem]
+  yAxis: [datasetTableViewConfigItem]
+}
+
+type datasetTableViewConfigItem {
+  name: String
+  rid: String
+  selected: Boolean
+  viewRid: String
+}
+
+type deleteNotificationsResult {
+  ids: [String]
+  message: String
+  status: String
+}
+
+type descriptionViewEditorSchema {
+  editorSchema: [descriptionViewEditorSchemaProperty]
+  realObjectRid: String
+}
+
+type descriptionViewEditorSchemaProperty {
+  editorSchemaAsJson: String
+  propertyName: String
+}
+
+type descriptionWidget {
+  fields: [descriptionWidgetField]
+}
+
+type descriptionWidgetField {
+  jsonValue: String
+  name: String
+  propertyName: String
+  required: Boolean
+  updatePropertyName: String
+}
+
+type downloadShortcut {
+  fileType: String
+  isGenerated: Boolean
+  servletName: String
+  shortcutIconName: String
+  shortcutRid: String
+}
+
+type drillConfiguration {
+  hideNaRows: Boolean
+  hideOperatorRows: Boolean
+  hideZeroRows: Boolean
+}
+
+type drillDescriptor {
+  dimensions: [drillDimension]
+  name: String
+  rid: String
+  rootKey: drillKeyBase64
+}
+
+type drillDimension {
+  name: String
+  type: String
+}
+
+type drillExternalSourceData {
+  columns: [drillExternalSourceDataColumn]
+  rows: [[String]]
+}
+
+type drillExternalSourceDataColumn {
+  displayName: String
+}
+
+type drillKeyBase64 {
+  key: String
+  type: String
+}
+
+type drillRowsContent {
+  values: [drillRowsContentRow]
+  xAxis: [drillRowsContentXAxisEntry]
+  yAxis: [drillRowsContentYAxisEntry]
+}
+
+type drillRowsContentRow {
+  treePath: String
+  values: [drillRowsContentRowValue]
+}
+
+type drillRowsContentRowValue {
+  bareVal: Float
+  col: Int
+  decimalPlaces: Int
+  url: String
+  val: String
+}
+
+type drillRowsContentXAxisEntry {
+  columnRid: String
+  name: String
+}
+
+type drillRowsContentYAxisEntry {
+  key: drillKeyBase64
+  name: String
+  treePath: String
+}
+
+type drillsInfo {
+  configuration: drillConfiguration
+  datasetName: String
+  descriptors: [drillDescriptor]
+}
+
+type enrollment {
+  enrollmentId: String
+  searchHint: String
+  showOrganization: Boolean
+}
+
+type executeInputButtonAction {
+  progressId: String
+  success: Boolean
+}
+
+type extendedExpression {
+  id: String
+  name: String
+}
+
+type extendedExpressions {
+  extendedExpressions: [extendedExpression]
+}
+
+type favorites {
+  items: [EpmObject]
+}
+
+"Interface for DataFetchers which use pagination"
+type filteredCommentsPageable {
+  comments: [comment]
+  minimumCommentHeight: Int
+  paginationCurrentPageStartingFromZero: Int
+  paginationHasMoreItems: Boolean
+  paginationPageSize: Int
+  paginationTotalNumberOfItems: Long
+  showProfileImage: Boolean
+}
+
+type flexbox {
+  direction: String
+  height: Int
+  horizontalAlignment: String
+  verticalAlignment: String
+}
+
+type flexboxLayoutObject {
+  backgroundImage: String
+  flexbox: flexbox
+  layout: String
+  menuConfig: String
+  rid: String
+  tabRid: String
+  webParentSpecificMenu: Boolean
+}
+
+type form {
+  approvalStagePayloads: [approvalStagePayload]
+  data: FormData
+  dataId: String
+  isShowDescriptionPane: Boolean
+  name: String
+  organisation: String
+  response: FormPayloadResponse
+  schema: FormSchema
+  state: FormOperations
+  storageTime: String
+  ui: FormUi
+}
+
+type generateReport {
+  uniqueReportName: String
+}
+
+type generateReportProgress {
+  complete: Boolean
+}
+
+type globalAuthConfig {
+  isConfigStudioAvailable: Boolean
+  noLogoutMenuItem: Boolean
+}
+
+type globalConfig {
+  appTitle: String
+  auth: globalAuthConfig
+  breadcrumbsFollowAffects: Boolean
+  bulletStyle: String
+  checkFalseStatusColor: String
+  checkTrueStatusColor: String
+  currentServerTime: Long
+  lockPeriodEnabled: Boolean
+  noStatusStyle: String
+  rememberTabSelection: Boolean
+  systemDateFormat: String
+  systemDateFormatString: String
+  theme: themeConfig
+  timezone: String
+  validExtensionsForFileUpload: [String]
+  validImageExtensions: [String]
+  valueNA: String
+  valueNAN: String
+  versionNumber: String
+}
+
+type happyPathElement {
+  id: String
+  index: Int
+  isComplete: Boolean
+  isCurrent: Boolean
+  isNotStarted: Boolean
+  name: String
+}
+
+type happyPathView {
+  bpmnXml: String
+  elements: [happyPathElement]
+  height: Int
+}
+
+type homeOrg {
+  logoRid: String
+}
+
+type image {
+  altText: String
+  embedded: Boolean
+  imageUrl: String
+  linkedTo: String
+  name: String
+  openInNewWindow: Boolean
+  scaleToFit: Boolean
+  url: String
+}
+
+type inlineSearchResultItem {
+  breadcrumbs: [EpmObject]
+  name: String
+  rid: String
+  type: String
+  typeSpecificFieldsAsJson: String
+}
+
+type inlineSearchResultItems {
+  hasMore: Boolean
+  items: [inlineSearchResultItem]
+}
+
+type input {
+  availability: inputAvailability
+  description: String
+  editorAsJson: String
+  id: String
+  inputRid: String
+  key: String
+  name: String
+  type: String
+}
+
+type inputValidationResults {
+  results: [results]
+}
+
+type inputView {
+  actions: [String]
+  id: String
+  inputs: [input]
+  name: String
+  rid: String
+}
+
+type integrationPowerBiAdvancedFilterConfig {
+  firstCondition: String
+  firstValue: integrationPowerBiFilterValueConfig
+  logicalOperator: String
+  secondCondition: String
+  secondValue: integrationPowerBiFilterValueConfig
+}
+
+type integrationPowerBiBasicFilterConfig {
+  basicFilterType: String
+  booleanValues: [Boolean]
+  doubleValues: [Float]
+  operator: String
+  stringValues: [String]
+}
+
+type integrationPowerBiConfig {
+  embedToken: String
+  filterPaneEnabled: Boolean
+  filters: [integrationPowerBiFilterConfig]
+  groupId: String
+  layout: integrationPowerBiLayoutConfig
+  navContentPaneEnabled: Boolean
+  objectId: String
+  reportPage: String
+  type: String
+}
+
+type integrationPowerBiFilterConfig {
+  advancedConfig: integrationPowerBiAdvancedFilterConfig
+  basicConfig: integrationPowerBiBasicFilterConfig
+  columnName: String
+  tableName: String
+  type: String
+}
+
+type integrationPowerBiFilterValueConfig {
+  boolValue: Boolean
+  doubleValue: Float
+  stringValue: String
+  type: String
+}
+
+type integrationPowerBiLayoutConfig {
+  height: Int
+}
+
+type layoutObject {
+  backgroundImage: String
+  layout: String
+  menuConfig: String
+  rid: String
+  tabRid: String
+  webParentSpecificMenu: Boolean
+}
+
+type linkEntry {
+  clickZoneHeight: Float
+  clickZoneWidth: Float
+  disableLink: Boolean
+  height: String
+  imageUrl: String
+  left: String
+  linkRid: String
+  linkedObjectName: String
+  openLinkInNewWindow: Boolean
+  options: String
+  top: String
+  type: String
+  width: String
+}
+
+type linkMap {
+  altText: String
+  height: String
+  imageUrl: String
+  left: String
+  linkMapEntrys: [linkEntry]
+  name: String
+  paddingHeight: String
+  paddingWidth: String
+  rid: String
+  scaleToFit: Boolean
+  top: String
+  width: String
+}
+
+type lock {
+  locked: Boolean
+  sourceType: String
+}
+
+type mainMenuInfo {
+  config: String
+}
+
+type microFrontend {
+  name: String
+  url: String
+}
+
+type nextUserTasks {
+  availableUserTaskInstances: [availableUserTaskInstance]
+}
+
+type nodeMenu {
+  icon: String
+  params: nodeMenuParams
+  text: String
+  type: String
+}
+
+type nodeMenuParams {
+  parentRid: String
+  sourceRid: String
+  type: String
+}
+
+type notification {
+  active: Boolean
+  groupName: String
+  id: String
+  message: String
+  timestamp: Long
+  title: String
+}
+
+type notificationGroup {
+  name: String
+  notifications: [notification]
+}
+
+type notificationList {
+  grouped: Boolean
+  notificationGroups: [notificationGroup]
+  notifications: [notification]
+}
+
+type notifications {
+  notificationsAmount: Int
+  rid: String
+}
+
+type numberInput {
+  formatType: String
+  formattedValue: String
+  inputRid: String
+  inputViewRid: String
+  style: String
+}
+
+type objectProperties {
+  createdBy: String
+  expertSchema: [String]
+  goDirectlyToNewChild: Boolean
+  initializedProperties: [String]
+  modifiedBy: String
+  modifiedDate: String
+  name: String
+  rid: String
+  schema: [String]
+  type: String
+  typeDisplayName: String
+}
+
+type objectToDeleteInfo {
+  leaf: Boolean
+  name: String
+  rid: String
+  runningProcesses: String
+  visibility: String
+}
+
+type operationResult {
+  objectUpdates: [String]
+  success: String
+}
+
+type pageInTopbar {
+  description: String
+  iconName: String
+  isPresent: Boolean
+  pageName: String
+  subpages: [subpage]
+}
+
+type pageLocationInfo {
+  elements: [EpmObject]
+}
+
+type pagesRoot {
+  pagesRootRid: String
+}
+
+type params {
+  externalUrl: String
+  linkedDrillRid: String
+  linkedObjectRid: String
+}
+
+type participantUser {
+  email: String
+  name: String
+  profilePhoto: String
+  rid: String
+}
+
+type passwordResult {
+  errorMessage: String
+  valid: Boolean
+}
+
+type period {
+  availableForWebparent: Boolean
+  endMillis: Long
+  periodName: String
+  startMillis: Long
+}
+
+type periodInfomation {
+  periodTypes: [periodType]
+  periods: [period]
+  selectedPeriod: periodType
+  selectedYear: period
+  years: [period]
+}
+
+type periodType {
+  id: String
+  name: String
+}
+
+type processControl {
+  message: String
+  processInstanceId: String
+  success: Boolean
+}
+
+type processLandscapeView {
+  cardTree: cardTree
+  name: String
+  openLinkInNewWindow: Boolean
+  rasterType: rasterType
+}
+
+type processRole {
+  name: String
+  userTaskDefinitionId: String
+}
+
+type quickSearchResult {
+  epmObject: EpmObject
+  pageLocationInfo: [quickSearchResultBreadcrumbItem]
+}
+
+type quickSearchResultBreadcrumbItem {
+  name: String
+  rid: String
+}
+
+type quickSearchResults {
+  hits: [quickSearchResult]
+  totalHits: Int
+}
+
+type realObjectForCreateObjectView {
+  parentRid: String
+  rid: String
+}
+
+type reference {
+  rid: String
+}
+
+type referencePropertyEditorInfoData {
+  hasChildren: Boolean
+  name: String
+  rid: String
+  selectable: Boolean
+  type: String
+}
+
+type referencePropertyEditorInitialTreeData {
+  children: [referencePropertyEditorInfoData]
+}
+
+type referencePropertyEditorTreeData {
+  children: [referencePropertyEditorInfoData]
+  currentTreeNodeName: String
+  currentTreeNodeParentRid: String
+  currentTreeNodeRid: String
+}
+
+"Interface for DataFetchers which use pagination"
+type relatedCommentsPageable {
+  paginationCurrentPageStartingFromZero: Int
+  paginationHasMoreItems: Boolean
+  paginationPageSize: Int
+  paginationTotalNumberOfItems: Long
+  relatedComments: [comment]
+}
+
+type reorderRows {
+  movedRowRid: String
+}
+
+type result {
+  millis: Long
+}
+
+type results {
+  message: String
+  rid: String
+  success: Boolean
+}
+
+type rootOrgs {
+  rootOrgs: [EpmObject]
+}
+
+type row {
+  cells: [cell]
+  deletable: Boolean
+  editable: Boolean
+  expanded: Boolean
+  menuConfig: String
+  rowAlignment: String
+  rowKey: String
+  rowRid: String
+  showTools: Boolean
+  sortable: Boolean
+  styles: [String]
+  tableRid: String
+}
+
+type saveBpmnView {
+  bpmnModel: bpmnModel
+  message: String
+  status: String
+}
+
+type searchBox {
+  searchHint: String
+  showOrganization: Boolean
+  type: String
+}
+
+type searchBoxResult {
+  icon: String
+  name: String
+  owningOrganization: String
+  rid: String
+  type: String
+  webParentRid: String
+}
+
+type searchBoxResults {
+  hasMore: Boolean
+  items: [searchBoxResult]
+  pageNumberFromZero: Int
+  pageSize: Int
+}
+
+type selection {
+  name: String
+  rid: String
+}
+
+type selectionTableRid {
+  rid: String
+}
+
+type sendReport {
+  errorMessage: String
+  success: Boolean
+}
+
+type shortcut {
+  altText: String
+  headerText: String
+  imageUrl: String
+  linkText: String
+  linkType: String
+  openInNewWindow: Boolean
+  params: params
+}
+
+type shortcutList {
+  shortcuts: [shortcut]
+  spaceBetween: Float
+}
+
+type siblinglist {
+  sibling: [EpmObject]
+}
+
+type singleSourceTransformerJobExecutionStartResult {
+  executionProcessId: String
+  executionStatus: String
+}
+
+type status {
+  icon: String
+  imageCode: String
+  isRiskObject: Boolean
+  priorityValue: String
+  statusValue: Float
+  trendImageCode: String
+}
+
+type submitFormResult {
+  errors: [submitFormResultFieldError]
+  state: FormOperations
+  verified: Boolean
+}
+
+type submitFormResultFieldError {
+  message: String
+  rid: String
+}
+
+type subpage {
+  showTabs: Boolean
+  showTitleBar: Boolean
+  showToolMenu: Boolean
+  subpageDescription: String
+  subpageIconName: String
+  subpageName: String
+  subpageRid: String
+}
+
+type svgStatusIcon {
+  rid: String
+  statusValueAvailable: Boolean
+  svgContent: String
+  type: String
+}
+
+type tab {
+  active: Boolean
+  rid: String
+  title: String
+}
+
+type table {
+  columnWidths: columnWidths
+  columns: [columnDefinition]
+  enableRowReordering: Boolean
+  expansion: String
+  hasHierarchy: Boolean
+  hasToolPanel: Boolean
+  isEveryBorderVisible: Boolean
+  isExpandedByDefaultOnMobile: Boolean
+  isRowCountEnabled: Boolean
+  layoutDensity: String
+  pagination: Boolean
+  paginationPageSize: Int
+  prePinnedColumns: Int
+  readOnly: Boolean
+  refreshInterval: Int
+  rows: [row]
+  tableSubtype: String
+  tableType: String
+  zebra: Boolean
+}
+
+type tableRowMenu {
+  menuConfig: String
+}
+
+type tabs {
+  rid: String
+  screenSize: String
+  tabs: [tab]
+}
+
+type taskAssigned {
+  message: String
+  status: String
+  userRid: String
+  userTaskAssignmentInfo: userTaskAssignmentInfo
+  userTaskInstanceId: String
+}
+
+type taskCompleted {
+  message: String
+  status: String
+  userTaskInstanceId: String
+  userTaskPageRid: String
+}
+
+type taskLink {
+  rid: String
+  taskDefinitionId: String
+}
+
+type textElement {
+  body: String
+  description: String
+}
+
+type themeConfig {
+  backgroundColorHex: String
+  highlightColorHex: String
+  primaryColorHex: String
+  secondaryColorHex: String
+  surfaceColorHex: String
+  tableFontSize: String
+}
+
+type themeTag {
+  name: String
+  value: String
+}
+
+type topBarCurrentWebParent {
+  defaultTabRid: String
+  object: EpmObject
+  tabRidForWebChild: String
+}
+
+type transformerDescription {
+  configurationValid: Boolean
+  source: transformerSource
+}
+
+type transformerJobExecutionProgress {
+  progress: String
+}
+
+type transformerJobExecutionStop {
+  success: Boolean
+}
+
+type transformerSource {
+  downloadShortcut: downloadShortcut
+  name: String
+  rid: String
+}
+
+type transformerUndoPreviousImport {
+  success: Boolean
+}
+
+type transformerWebSettings {
+  hidePreviousImportsTab: Boolean
+  hideTemplateSection: Boolean
+}
+
+type updatedNodes {
+  nodeData: [String]
+  tableRid: String
+}
+
+type updatedObject {
+  propertyNames: [String]
+  propertyValues: [String]
+  rid: String
+  type: String
+}
+
+type urlInfo {
+  isInternal: Boolean
+  url: String
+}
+
+type urlView {
+  height: String
+  name: String
+  url: String
+}
+
+type user {
+  emailAddress: String
+}
+
+type userProfilePhoto {
+  contentHash: String
+}
+
+type userTask {
+  canCurrentUserComplete: Boolean
+  children: [webchildInfo]
+  isErrorPage: Boolean
+  isPageValid: Boolean
+  menuConfig: String
+  name: String
+  nextOnComplete: Boolean
+  tabsVisible: Boolean
+  validationMessage: String
+}
+
+type userTaskAssignmentInfo {
+  assignee: participantUser
+  participantUsers: [participantUser]
+  userTaskInstanceId: String
+}
+
+type userTaskVariables {
+  data: String
+  initialInvalidState: Boolean
+  schema: String
+  uiSchema: String
+}
+
+type view {
+  configuration: String
+  description: String
+  name: String
+  viewRid: String
+}
+
+type views {
+  views: [datasetTableView]
+}
+
+type webChildReference {
+  errorMessage: String
+  expression: String
+}
+
+type webParents {
+  webParentRids: [String]
+}
+
+type webTableViews {
+  tableRid: String
+  webTableViews: [view]
+}
+
+type webchildInfo {
+  bipolarSide: Boolean
+  borderStyle: String
+  canHaveTableViews: Boolean
+  containerRid: String
+  enabledDisplayModes: [String]
+  fontColor: String
+  headerColor: String
+  headerStyle: String
+  height: Int
+  icon: String
+  imageCode: String
+  inlineEditingAllowed: Boolean
+  menuConfig: String
+  object: EpmObject
+  shadow: Boolean
+  showTools: Boolean
+  statusRelValue: Float
+  transparency: Int
+  widgetType: String
+  width: Int
+}
+
+type workspaceTopLevelWebParents {
+  closureTable: [WorkspaceClosureTableRow]
+  lifetimes: [WebParentsLifeTime]
+}
+
+enum bpmnFormFieldType {
+  BOOLEAN
+  DATE
+  ENUM
+  LONG
+  STRING
+}
+
+enum inputAvailability {
+  DISABLED
+  ENABLED
+  HIDDEN
+}
+
+enum rasterType {
+  ALL_LINES
+  HORIZONTAL_LINES
+  NO_LINES
+}
+
+"Submit Type"
+enum submitType {
+  "APPROVE"
+  APPROVE
+  "PARTIAL_APPROVE"
+  PARTIAL_APPROVE
+  "REJECT"
+  REJECT
+  "REOPEN"
+  REOPEN
+  "SAVE"
+  SAVE
+  "SUBMIT"
+  SUBMIT
+}
+
+"EPM FormData Scalar"
+scalar FormData
+
+"EPM Form State Scalar"
+scalar FormOperations
+
+"EPM Form Schema Scalar"
+scalar FormSchema
+
+"EPM Form UI Scalar"
+scalar FormUi
+
+"A 64-bit signed integer"
+scalar Long
+
+input CorrelatedObjectInput {
+  name: String
+  rid: String
+}
+
+input CorrelationInput {
+  affectedObject: CorrelatedObjectInput
+  affectingObject: CorrelatedObjectInput
+  value: Float
+}
+
+input InputViewInput {
+  id: String
+  inputRid: String
+  key: String
+  name: String
+  type: String
+  value: String
+}
+
+input bpmnBoundsInput {
+  __typename: String
+  height: Float
+  width: Float
+  x: Float
+  y: Float
+}
+
+input bpmnConnectionInput {
+  __typename: String
+  conditionExpression: String
+  id: String
+  name: String
+  nameBounds: bpmnBoundsInput
+  sourceId: String
+  targetId: String
+  type: String
+  waypoints: [bpmnWaypointInput]
+}
+
+input bpmnFormFieldInput {
+  __typename: String
+  id: String
+  name: String
+  required: Boolean
+  type: bpmnFormFieldType
+  values: [bpmnFormFieldValueInput]
+}
+
+input bpmnFormFieldValueInput {
+  __typename: String
+  id: String
+  name: String
+}
+
+input bpmnMessageInput {
+  __typename: String
+  id: String
+  name: String
+}
+
+input bpmnModelInput {
+  __typename: String
+  connections: [bpmnConnectionInput]
+  messages: [bpmnMessageInput]
+  process: bpmnProcessDescriptionInput
+  shapes: [bpmnShapeInput]
+}
+
+input bpmnProcessDescriptionInput {
+  __typename: String
+  id: String
+  name: String
+}
+
+input bpmnShapeInput {
+  __typename: String
+  bounds: bpmnBoundsInput
+  childIds: [String]
+  formFields: [bpmnFormFieldInput]
+  happyPath: String
+  id: String
+  implementationTopic: String
+  messageRef: String
+  name: String
+  pageId: String
+  parentId: String
+  process: bpmnProcessDescriptionInput
+  roles: [String]
+  type: String
+}
+
+input bpmnWaypointInput {
+  __typename: String
+  x: Float
+  y: Float
+}
+
+input variable {
+  name: String
+  value: String
+}
