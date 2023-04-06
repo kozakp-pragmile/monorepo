@@ -4,38 +4,7 @@ query BpmnViewForProcessReference {
     bpmnXml
     bpmnModelName
     bpmnModel {
-      connections {
-        id
-        sourceId
-        targetId
-        name
-        nameBounds {
-          x
-          y
-          width
-          height
-        }
-        type
-        conditionExpression
-        waypoints {
-          x
-          y
-        }
-      }
-      shapes {
-        id
-        name
-        bounds {
-          x
-          y
-          width
-          height
-        }
-        type
-        ... on bpmnUserTask {
-          pageId
-        }
-      }
+      ...BPMNModel
     }
     height
     displayProcessRoles
@@ -48,5 +17,39 @@ query BpmnViewForProcessReference {
       rid
     }
     isEditDisabled
+  }
+}
+fragment BPMNModel on bpmnModel {
+  connections {
+    id
+    sourceId
+    targetId
+    name
+    nameBounds {
+      x
+      y
+      width
+      height
+    }
+    type
+    conditionExpression
+    waypoints {
+      x
+      y
+    }
+  }
+  shapes {
+    id
+    name
+    bounds {
+      x
+      y
+      width
+      height
+    }
+    type
+    ... on bpmnUserTask {
+      pageId
+    }
   }
 }

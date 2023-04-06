@@ -1,11 +1,43 @@
-mutation SaveBPMNModelInstance($model: bpmnModelInput) {
-  saveBpmnView(model: $model) {
+mutation SaveBPMNModelInstance($deploymentName: String, $model: bpmnModelInput) {
+  saveBpmnView(deploymentName: $deploymentName, model: $model) {
     bpmnModel {
-      connections {
-        id
-      }
+      ...BPMNModel
     }
     message
     status
+  }
+}
+fragment BPMNModel on bpmnModel {
+  connections {
+    id
+    sourceId
+    targetId
+    name
+    nameBounds {
+      x
+      y
+      width
+      height
+    }
+    type
+    conditionExpression
+    waypoints {
+      x
+      y
+    }
+  }
+  shapes {
+    id
+    name
+    bounds {
+      x
+      y
+      width
+      height
+    }
+    type
+    ... on bpmnUserTask {
+      pageId
+    }
   }
 }

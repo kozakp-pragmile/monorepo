@@ -1,6 +1,7 @@
 let input = {
+  "custom": "someValue",
   "process": {
-    "id": "Process_caafe04d_9849_4fda_b987_700d7053ae7cfida",
+    "id": "Process_caafe04d_9849_4fdw_b987_700d7053ae7cfida",
     "name": null,
     "__typename": "bpmnProcessDescription"
   },
@@ -115,7 +116,7 @@ let input = {
 let data = {
   query: "mutation SaveBpmnView($deploymentName: String, $model: bpmnModelInput) { saveBpmnView(deploymentName: $deploymentName, model: $model) { bpmnModel { connections { id } } message status }}",
   operationName: "SaveBpmnView",
-  variables: {"deploymentName": "another-upload", "model": input}
+  variables: {"deploymentName": "test-validation", "model": input}
 };
 
 fetch("/CorpoWebserver/graphql", {

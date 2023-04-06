@@ -217,6 +217,7 @@ type QueryType {
   referencePropertyEditorTreeData(creationParentRid: String, creationTabRid: String, creationTemplateRid: String, creationType: String, editMode: String, editionObjectRid: String, referencePropertyName: String, treeNodeRid: String): referencePropertyEditorTreeData
   referencePropertyListEditor(creationParentRid: String, creationTabRid: String, creationTemplateRid: String, creationType: String, editMode: String, editionObjectRid: String, pageNumberStartingFromZero: Int, pageSize: Int, referencePropertyName: String, searchText: String): inlineSearchResultItems
   relatedCommentsPageable(commentListRid: String, optionalFilterText: String, optionalSortingDescending: Boolean, optionalSortingField: String, optionalSortingNullsFirst: Boolean, paginationPageNumberStartingFromZero: Int, paginationPageSize: Int): relatedCommentsPageable
+  reportFormEnrollment(rid: String): reportFormEnrollment
   rootOrganisations(periodTimestamp: Long, periodType: String, selectedWebParentId: String): rootOrgs
   searchBox(rid: String): searchBox
   searchBoxResults(pageNumberFromZero: Int, pageSize: Int, rid: String, selectedPeriodMillis: Long, selectedPeriodType: String, selectedWebParentRid: String, text: String): searchBoxResults
@@ -1320,6 +1321,12 @@ type relatedCommentsPageable {
 
 type reorderRows {
   movedRowRid: String
+}
+
+type reportFormEnrollment {
+  reportFormId: String
+  searchHint: String
+  showOrganization: Boolean
 }
 
 type result {
