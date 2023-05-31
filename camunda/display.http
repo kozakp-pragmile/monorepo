@@ -1,0 +1,16 @@
+### Fetch process definitions
+GET http://localhost:10000/engine-rest/process-definition
+accept: application/json
+
+### Fetch process instances
+GET http://localhost:10000/engine-rest/process-instance
+
+### Fetch deployments
+GET http://localhost:10000/engine-rest/deployment
+
+### Fetch deployments
+GET http://localhost:10000/engine-rest/history/process-instance
+
+###
+DELETE http://localhost:10000/engine-rest/history/process-instance/6e99107f-ff8d-11ed-9631-566fe64c8e3d
+
