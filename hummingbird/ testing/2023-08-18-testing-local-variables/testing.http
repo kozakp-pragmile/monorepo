@@ -1,0 +1,112 @@
+### create deployment
+POST http://localhost:8095/hummingbird/api/v1/deployment/create?user-id=100&deployment-source=intellij
+accept: application/json
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="data"; filename="2-tasks.bpmn"
+
+< 2-tasks.bpmn
+--WebAppBoundary--
+
+> {%
+  client.global.set("deploymentId", response.body.id);
+%}
+
+### get process definition
+GET http://localhost:8095/hummingbird/api/v1/process-definition?deploymentId={{deploymentId}}
+
+> {%
+  client.global.set("processDefinitionId", response.body[0].id);
+%}
+
+### start
+POST http://localhost:8095/hummingbird/api/v1/process-definition/{{processDefinitionId}}/start
+Content-Type: application/json
+
+{
+  "businessKey": "businessKey",
+  "variables": {
+    "processVariable": "processVariableValue"
+  }
+}
+
+> {%
+  client.global.set("processInstanceId", response.body.id);
+%}
+
+### get task
+GET http://localhost:8095/hummingbird/api/v1/task?processInstanceId={{processInstanceId}}&active=true
+
+> {%
+  client.global.set("taskId", response.body[0].id);
+%}
+
+### get local variables
+GET http://localhost:8095/hummingbird/api/v1/task/{{taskId}}/local-variables
+
+### set local variables
+POST http://localhost:8095/hummingbird/api/v1/task/{{taskId}}/local-variables
+Content-Type: application/json
+
+{
+  "modifications": {
+    "stringVariable": "stringVariableValue",
+    "intVariable": 156,
+    "boolValue": true
+  }
+}
+
+### get local variables
+GET http://localhost:8095/hummingbird/api/v1/task/{{taskId}}/local-variables
+
+### assign task
+POST http://localhost:8095/hummingbird/api/v1/task/{{taskId}}/assignee
+Content-Type: application/json
+
+{
+  "userId": "100"
+}
+
+### set local variables
+POST http://localhost:8095/hummingbird/api/v1/task/{{taskId}}/local-variables
+Content-Type: application/json
+
+{
+  "modifications": {
+    "stringVariable": "stringVariableValueModified",
+    "intVariableNew": 157,
+    "boolValue": false
+  }
+}
+
+
+### complete task
+POST http://localhost:8095/hummingbird/api/v1/task/{{taskId}}/complete
+Content-Type: application/json
+
+{
+  "userId": "100",
+  "variables": {
+    "processVariable": "processVariableValue",
+    "stringVariable": "stringVariableValueModifiedDuringComplete",
+    "intVariableNew": 200
+  }
+}
+
+
+### get local variables
+GET http://localhost:8095/hummingbird/api/v1/task/{{taskId}}/local-variables
+
+### set local variables - will return 404 - I think it makes sense
+POST http://localhost:8095/hummingbird/api/v1/task/{{taskId}}/local-variables
+Content-Type: application/json
+
+{
+  "modifications": {
+    "afterComplete": "afterCompleteValue"
+  }
+}
+
+### get local variables
+GET http://localhost:8095/hummingbird/api/v1/task/{{taskId}}/local-variables
